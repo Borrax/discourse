@@ -2,9 +2,13 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "es6",
-    "outDir": "dist"
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "noUnusedParmeters": true,
+    "noImpliciyAny": true,
+    "noUnusedLocals": true
   },
-  "files": [
-    "index.ts"
-  ]
+  "include": ["src/*"],
+  "exclude": ["node_modules", "dist"]
 }
