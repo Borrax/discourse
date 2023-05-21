@@ -1,1 +1,2 @@
-console.log("hello from the client")
+console.log('hello from the client')
+
