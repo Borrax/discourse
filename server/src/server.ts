@@ -1,1 +1,1 @@
-console.log("hello from the server side")
+console.log('hello from the server side')
