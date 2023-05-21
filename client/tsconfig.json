@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "target": "es6",
+    "target": "es2017",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "noUnusedParmeters": true,
-    "noImpliciyAny": true,
-    "noUnusedLocals": true
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react-jsx"
   },
-  "include": ["src/*"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
