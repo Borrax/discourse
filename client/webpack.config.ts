@@ -1,8 +1,11 @@
 import type { Configuration } from 'webpack'
+import type { Configuration as ConfigDevServer } from 'webpack-dev-server'
 import path from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
-const config: Configuration = {
+type WebpackConfig = Configuration & ConfigDevServer
+
+const config: WebpackConfig = {
   mode: 'development',
   entry: './src/client.tsx',
   output: {
@@ -25,7 +28,12 @@ const config: Configuration = {
     new HtmlWebpackPlugin({
       title: 'Discourse'
     })
-  ]
+  ],
+  devServer: {
+    port: 5000,
+    hot: true,
+    open: true
+  }
 }
 
 export default config
