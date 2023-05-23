@@ -1,12 +1,10 @@
-import type { Response } from 'express'
 import express from 'express'
+import { attachRoutes } from './routes/routes'
 
 const app = express()
 const PORT: number = 3000
 
-app.get('/', (_req, res: Response) => {
-  res.send('Hello from express')
-})
+attachRoutes(app)
 
 app.listen(PORT, () => {
   console.log('Server listening on port', PORT)
