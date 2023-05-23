@@ -2,7 +2,7 @@ import express from 'express'
 import { attachRoutes } from './routes/routes'
 
 const app = express()
-const PORT: number = 3000
+const PORT: number = 8000
 
 attachRoutes(app)
 
