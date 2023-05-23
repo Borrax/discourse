@@ -1,5 +1,12 @@
 @use 'globals';
 
+@font-face {
+  font-family: 'Balco';
+  src: url('../assets/fonts/BalcoVar.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400 800;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,4 +17,5 @@ body {
   min-height: 100svh;
   background: globals.$base-bg-color;
   color: globals.$base-text-color;
+  font-family: Balco, cursive;
 }
