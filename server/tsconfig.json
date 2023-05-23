@@ -6,10 +6,10 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "strict": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "rootDir": "src"
   },
-  "include": ["src/*"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
