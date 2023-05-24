@@ -9,6 +9,7 @@ import { attachUserRoutes } from './userRoutes'
 */
 export const attachRoutes = (app: Application): void => {
   const staticDirDest = path.resolve(__dirname, '../../../client/dist/')
+  const apiBaseUrl = '/api'
 
   app.use(express.static(staticDirDest))
 
@@ -16,5 +17,5 @@ export const attachRoutes = (app: Application): void => {
     res.sendFile(path.join(staticDirDest, './index.html'))
   })
 
-  attachUserRoutes(app)
+  attachUserRoutes(app, apiBaseUrl)
 }
