@@ -1,8 +1,11 @@
 import mongoose from 'mongoose'
 
-export const connectToDb = async () => {
-const connectionUrl = 'mongodb://127.0.0.1:27017/discourse'
-  await mongoose.connect(connectionUrl)
-  .then(() => console.log('Connected to MongoDB'))
+const connectToDb = async () => {
+  const connectionUrl = 'mongodb://127.0.0.1:27017/discourse'
+  return await mongoose.connect(connectionUrl)
+}
+
+export const initializeDb = () => {
+  connectToDb().then(() => console.log('connected to the db'))
   .catch(err => console.error(err))
 }
