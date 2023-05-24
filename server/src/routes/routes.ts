@@ -1,4 +1,4 @@
-import type { Application, Response } from 'express'
+import type { Application } from 'express'
 import express from 'express'
 import path from 'path'
 
@@ -11,7 +11,7 @@ const staticDirDest = path.resolve(__dirname, '../../../client/dist/')
 export const attachRoutes = (app: Application): void => {
   app.use(express.static(staticDirDest))
 
-  app.get('/', (_req, res: Response) => {
+  app.get('/', (_req, res) => {
     res.sendFile(path.join(staticDirDest, './index.html'))
   })
 }
