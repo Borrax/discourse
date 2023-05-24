@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Request, Response } from 'express'
 
 const register = (_req: Request, res: Response): void => {
   res.send('Not implemented yet')
