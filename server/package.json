@@ -2,7 +2,7 @@
   "name": "server",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/server.js",
+    "start": "tsc && node dist/server/src/server.js",
     "dev": "nodemon"
   },
   "devDependencies": {
