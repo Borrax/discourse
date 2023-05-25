@@ -9,8 +9,14 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "baseUrl": "./",
+    "paths": {
+      "shared/*": ["../shared/*"],
+      "*": ["./src/*"]
+    },
+    "rootDirs": ["./src", "../shared"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["./src/**.*ts"],
   "exclude": ["node_modules", "dist"]
 }
