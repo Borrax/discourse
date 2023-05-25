@@ -6,11 +6,9 @@ import { initializeMiddlewares } from './middlewares/middlewares'
 const app = express()
 const PORT: number = 8000
 
-app.use(express.json())
-
+initializeDb()
 initializeMiddlewares(app)
 attachRoutes(app)
-initializeDb()
 
 app.listen(PORT, () => {
   console.log('Server listening on port', PORT)

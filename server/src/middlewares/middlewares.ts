@@ -1,5 +1,6 @@
 import type { Application, NextFunction,
-  Request, Response } from "express";
+  Request, Response } from 'express'
+import { json } from 'express'
 
 const errorHandler = (
   err: any,
@@ -23,5 +24,6 @@ const errorHandler = (
 }
 
 export const initializeMiddlewares = (app: Application) => {
+  app.use(json())
   app.use(errorHandler)
 }
