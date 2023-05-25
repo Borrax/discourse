@@ -5,6 +5,7 @@ import { initializeDb } from './db/db'
 const app = express()
 const PORT: number = 8000
 
+app.use(express.json())
 attachRoutes(app)
 
 initializeDb()
