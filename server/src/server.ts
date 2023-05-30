@@ -3,6 +3,10 @@ import { attachRoutes } from './routes/routes'
 import { initializeDb } from './db/db'
 import { initializeMiddlewares } from './middlewares/middlewares'
 
+if (process.env.NODE_ENV === undefined) {
+  process.env.NODE_ENV = 'production'
+}
+
 export const app = express()
 const PORT: number = 8000
 
@@ -12,4 +16,5 @@ attachRoutes(app)
 
 app.listen(PORT, () => {
   console.log('Server listening on port', PORT)
+  console.log('Node env:', process.env.NODE_ENV)
 })
