@@ -1,5 +1,4 @@
 {
-  "exec": "npm start",
   "watch": [
     "src/",
     "tsconfig.json"

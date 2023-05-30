@@ -2,8 +2,8 @@
   "name": "server",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/server/src/server.js",
-    "dev": "set NODE_ENV=development && nodemon",
+    "start": "node dist/server/src/server.js",
+    "dev": "set NODE_ENV=development && nodemon --exec \"npm run build && npm start\"",
     "test": "node --test"
   },
   "devDependencies": {
