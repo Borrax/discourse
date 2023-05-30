@@ -8,7 +8,7 @@ import { attachUserRoutes } from './userRoutes'
 * @params app: The express app instance
 */
 export const attachRoutes = (app: Application): void => {
-  const staticDirDest = path.resolve(__dirname, '../../../client/dist/')
+  const staticDirDest = path.resolve(__dirname, '../../../../../client/dist/')
   const apiBaseUrl = '/api'
 
   app.use(express.static(staticDirDest))
