@@ -15,8 +15,7 @@
       "shared/*": ["../shared/*"],
       "*": ["./src/*"]
     },
-    "rootDirs": ["./src", "../shared"]
+    "rootDirs": ["./src/", "../shared/"]
   },
-  "include": ["./src/**.*ts"],
   "exclude": ["node_modules", "dist"]
 }
