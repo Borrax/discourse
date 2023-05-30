@@ -2,6 +2,7 @@ import type { Application } from 'express'
 import express from 'express'
 import path from 'path'
 import { attachUserRoutes } from './userRoutes'
+import { attachTestRoutes } from './testRoutes'
 
 /**
 * @function A function responsible to attaching all the server routes to the express app
@@ -18,4 +19,8 @@ export const attachRoutes = (app: Application): void => {
   })
 
   attachUserRoutes(app, apiBaseUrl)
+
+  if (process.env.NODE_ENV === 'development') {
+    attachTestRoutes(app)
+  }
 }
