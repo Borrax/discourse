@@ -1,4 +1,4 @@
-import { Application } from "express";
+import { type Application } from 'express'
 
 /**
 * @function Attaches all the routes that are meant for testing

@@ -20,7 +20,8 @@ export const attachRoutes = (app: Application): void => {
 
   attachUserRoutes(app, apiBaseUrl)
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test') {
     attachTestRoutes(app)
   }
 }
