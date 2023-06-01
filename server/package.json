@@ -5,7 +5,7 @@
     "start": "node dist/server/src/start.js",
     "dev": "set NODE_ENV=development && nodemon --exec \"npm run build && npm start\"",
     "test": "npm run build && jest",
-    "test:watch": "nodemon --exec \"npm run build && npm run test\""
+    "test:watch": "nodemon --exec \"npm run test\""
   },
   "devDependencies": {
     "@types/express": "4.17.17",
