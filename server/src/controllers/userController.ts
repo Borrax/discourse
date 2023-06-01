@@ -20,7 +20,7 @@ const isValidRegData = (regData: UserRegData | null): boolean => {
   return true
 }
 
-const register = async (req: Request, res: Response) => {
+const register = async (req: Request, res: Response): Promise<undefined> => {
   const regData: UserRegData | null = req.body
 
   if (!isValidRegData(regData)) {
