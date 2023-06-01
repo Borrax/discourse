@@ -1,19 +1,18 @@
-import { describe, it } from 'node:test'
+import { describe, it, expect } from '@jest/globals'
 import supertest from 'supertest'
-import assert from 'node:assert'
 import { app } from '../server'
 
 describe('Express server testing', () => {
   describe('Testing GET to /', () => {
     it('should return status 200', async () => {
       const resp = await supertest(app).get('/')
-      assert.equal(resp.status, 200)
+      expect(resp.status).toBe(200)
     })
 
     it('should return an html file', async () => {
       const resp = await supertest(app).get('/')
       const contentType = resp.headers['content-type']
-      assert.ok(contentType.includes('text/html'))
+      expect(contentType).toContain('text/html')
     })
   })
 
@@ -28,7 +27,7 @@ describe('Express server testing', () => {
         .send(badJsonStr)
         .set('content-type', 'application/json')
 
-      assert.strictEqual(resp.status, 400)
+      expect(resp.status).toBe(400)
     })
 
     it('should return the same json that it has received', async () => {
@@ -42,11 +41,11 @@ describe('Express server testing', () => {
       const resp = await supertest(app).post('/test/json')
         .send(testObj)
         .set('content-type', 'application/json')
+        .set('Accept', 'application/json')
 
       const contentType = resp.headers['content-type']
-      assert.strictEqual(resp.status, 200)
-      assert.ok(contentType.includes('application/json'))
-      assert.deepStrictEqual(resp.body, testObj)
+      expect(contentType).toContain('application/json')
+      expect(resp.body).toEqual(testObj)
     })
   })
 })
