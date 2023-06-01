@@ -20,7 +20,7 @@ const isValidRegData = (regData: UserRegData | null): boolean => {
   return true
 }
 
-const register = (req: Request, res: Response): void => {
+const register = async (req: Request, res: Response) => {
   const regData: UserRegData | null = req.body
 
   if (!isValidRegData(regData)) {
@@ -28,7 +28,11 @@ const register = (req: Request, res: Response): void => {
     return
   }
 
-  if (User.exists({ username: regData.username })) {
+  const { username } = regData as UserRegData
+
+  const existingUser = await User.findOne({ username })
+
+  if (existingUser !== null) {
     res.json({ err: 'User already exists' })
     return
   }
