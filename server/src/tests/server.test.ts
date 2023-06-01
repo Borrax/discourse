@@ -1,16 +1,32 @@
-import { describe, it, expect } from '@jest/globals'
+import type { IncomingMessage, Server, ServerResponse } from 'http'
+import { describe, it, expect, beforeAll, afterAll } from '@jest/globals'
 import supertest from 'supertest'
 import { app } from '../server'
 
+let server: Server<typeof IncomingMessage, typeof ServerResponse>
+let request: supertest.SuperAgentTest
+
 describe('Express server testing', () => {
+  beforeAll(() => {
+    server = app.listen(8000, () => {
+      console.log('Server listening for tests')
+    })
+
+    request = supertest.agent(server)
+  })
+
+  afterAll(() => {
+    server.close()
+  })
+
   describe('Testing GET to /', () => {
     it('should return status 200', async () => {
-      const resp = await supertest(app).get('/')
+      const resp = await request.get('/')
       expect(resp.status).toBe(200)
     })
 
     it('should return an html file', async () => {
-      const resp = await supertest(app).get('/')
+      const resp = await request.get('/')
       const contentType = resp.headers['content-type']
       expect(contentType).toContain('text/html')
     })
@@ -23,7 +39,7 @@ describe('Express server testing', () => {
         "subject": "bad json"
       }`
 
-      const resp = await supertest(app).post('/test/json')
+      const resp = await request.post('/test/json')
         .send(badJsonStr)
         .set('content-type', 'application/json')
 
@@ -38,7 +54,7 @@ describe('Express server testing', () => {
         num: 4
       }
 
-      const resp = await supertest(app).post('/test/json')
+      const resp = await request.post('/test/json')
         .send(testObj)
         .set('content-type', 'application/json')
         .set('Accept', 'application/json')
