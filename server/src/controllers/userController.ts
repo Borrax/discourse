@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 import type { UserRegData } from 'shared/UserSharedTypes'
+import { User } from '../models/user'
 
 const isValidRegData = (regData: UserRegData | null): boolean => {
   if (regData === null || typeof regData !== 'object') {
@@ -24,6 +25,11 @@ const register = (req: Request, res: Response): void => {
 
   if (!isValidRegData(regData)) {
     res.send({ err: 'Invalid registration data' })
+    return
+  }
+
+  if (User.exists({ username: regData.username })) {
+    res.json({ err: 'User already exists' })
     return
   }
 
