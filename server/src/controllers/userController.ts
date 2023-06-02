@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
-import type { UserRegData, UserRegResponse } from 'shared/UserSharedTypes'
-import type { ErrorResponse } from 'shared/ServerResponseTypes'
+import type { UserRegData, UserRegResponse, UserRegResponseLoad } from 'shared/UserSharedTypes'
+import type { ErrorResponse, SuccessResponse } from 'shared/ServerResponseTypes'
 import { User } from '../models/user'
 
 const isErrorResponseObj = (resp: UserRegResponse | null): boolean => {
@@ -13,6 +13,12 @@ const isErrorResponseObj = (resp: UserRegResponse | null): boolean => {
 const createErrorResponseObj = (msg: string): ErrorResponse => {
   return {
     err: msg
+  }
+}
+
+const createSuccessResponseObj = (load: UserRegResponseLoad): SuccessResponse<UserRegResponseLoad> => {
+  return {
+    load
   }
 }
 
@@ -78,12 +84,20 @@ const register = async (req: Request, res: Response): Promise<undefined> => {
     serverResponse = createErrorResponseObj('Error registering the user')
   })
 
+  // Checking if there is an error obj assigned to the server
+  // response after the save user to db attempt
   if (isErrorResponseObj(serverResponse)) {
     res.status(500).json(serverResponse)
     return
   }
 
-  res.send(req.body)
+  const payloadForClient: UserRegResponseLoad = {
+    username
+  }
+
+  serverResponse = createSuccessResponseObj(payloadForClient)
+
+  res.json(serverResponse)
 }
 
 export const UserController = {
