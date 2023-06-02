@@ -10,6 +10,12 @@ const isErrorResponseObj = (resp: UserRegResponse | null): boolean => {
   return false
 }
 
+const createErrorResponseObj = (msg: string): ErrorResponse => {
+  return {
+    err: msg
+  }
+}
+
 const isValidRegData = (regData: UserRegData | null): boolean => {
   if (regData === null || typeof regData !== 'object') {
     return false
@@ -30,28 +36,33 @@ const isValidRegData = (regData: UserRegData | null): boolean => {
 
 const register = async (req: Request, res: Response): Promise<undefined> => {
   const regData: UserRegData | null = req.body
+  let serverResponse: UserRegResponse | null = null
 
   if (!isValidRegData(regData)) {
-    res.send({ err: 'Invalid registration data' })
+    serverResponse = createErrorResponseObj('Invalid registration data')
+    res.status(400).json(serverResponse)
     return
   }
 
   const { username } = regData as UserRegData
-  let serverResponse: UserRegResponse | null = null
 
   const existingUser = await User.findOne({ username }).catch(err => {
     console.error('Something went wrong trying to find user with username:', username)
     console.error(err)
-    serverResponse = { err: 'Something went wrong with the server' }
+    serverResponse = createErrorResponseObj('Something went wrong with the server')
   })
 
+  // if the check in the databases yielded some kind of
+  // a database error the serverResponse would be assigned
+  // in the catch clauses
   if (isErrorResponseObj(serverResponse)) {
     res.status(500).json(serverResponse)
     return
   }
 
   if (existingUser !== null) {
-    res.json({ err: 'User already exists' })
+    serverResponse = createErrorResponseObj('User already exists')
+    res.status(400).json(serverResponse)
     return
   }
 
