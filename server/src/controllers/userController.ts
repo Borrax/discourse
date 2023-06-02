@@ -44,7 +44,7 @@ const register = async (req: Request, res: Response): Promise<undefined> => {
     return
   }
 
-  const { username } = regData as UserRegData
+  const { username, password } = regData as UserRegData
 
   const existingUser = await User.findOne({ username }).catch(err => {
     console.error('Something went wrong trying to find user with username:', username)
@@ -63,6 +63,23 @@ const register = async (req: Request, res: Response): Promise<undefined> => {
   if (existingUser !== null) {
     serverResponse = createErrorResponseObj('User already exists')
     res.status(400).json(serverResponse)
+    return
+  }
+
+  const userDataToSave = {
+    username,
+    password
+  }
+
+  const newUser = new User(userDataToSave)
+  await newUser.save().catch(err => {
+    console.error('error saving user', userDataToSave)
+    console.error(err)
+    serverResponse = createErrorResponseObj('Error registering the user')
+  })
+
+  if (isErrorResponseObj(serverResponse)) {
+    res.status(500).json(serverResponse)
     return
   }
 
