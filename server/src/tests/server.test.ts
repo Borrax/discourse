@@ -1,5 +1,5 @@
 import type { IncomingMessage, Server, ServerResponse } from 'http'
-import { describe, it, expect, beforeAll, afterAll } from '@jest/globals'
+import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals'
 import supertest from 'supertest'
 import { app } from '../server'
 
@@ -44,6 +44,21 @@ describe('Express server testing', () => {
         .set('content-type', 'application/json')
 
       expect(resp.status).toBe(400)
+    })
+
+    it('should display an error in the console when an invalid json is provided', async () => {
+      const badJsonStr = `{
+        "test": testing
+        "subject": "bad json"
+      }`
+
+      console.error = jest.fn()
+
+      await request.post('/test/json')
+        .send(badJsonStr)
+        .set('content-type', 'application/json')
+
+      expect(console.error).toHaveBeenCalled()
     })
 
     it('should return the same json that it has received', async () => {
