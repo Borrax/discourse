@@ -30,7 +30,10 @@ const register = async (req: Request, res: Response): Promise<undefined> => {
 
   const { username } = regData as UserRegData
 
-  const existingUser = await User.findOne({ username })
+  const existingUser = await User.findOne({ username }).catch(err => {
+    console.error('Something went wrong trying to find user with username:', username)
+    console.error(err)
+  })
 
   if (existingUser !== null) {
     res.json({ err: 'User already exists' })
