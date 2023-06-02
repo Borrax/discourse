@@ -39,6 +39,8 @@ describe('Express server testing', () => {
         "subject": "bad json"
       }`
 
+      jest.spyOn(console, 'error').mockImplementation(() => {})
+
       const resp = await request.post('/test/json')
         .send(badJsonStr)
         .set('content-type', 'application/json')
@@ -52,7 +54,9 @@ describe('Express server testing', () => {
         "subject": "bad json"
       }`
 
-      console.error = jest.fn()
+      // surpressing the displaying of the console error for
+      // his test
+      jest.spyOn(console, 'error').mockImplementation(() => {})
 
       await request.post('/test/json')
         .send(badJsonStr)
