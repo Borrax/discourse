@@ -10,15 +10,13 @@ import { attachTestRoutes } from './testRoutes'
 */
 export const attachRoutes = (app: Application): void => {
   const staticDirDest = path.resolve(__dirname, '../../../../../client/dist/')
-  const apiBaseUrl = '/api'
-
   app.use(express.static(staticDirDest))
 
   app.get('/', (_req, res) => {
     res.sendFile(path.join(staticDirDest, './index.html'))
   })
 
-  attachUserRoutes(app, apiBaseUrl)
+  attachUserRoutes(app)
 
   if (process.env.NODE_ENV === 'development' ||
     process.env.NODE_ENV === 'test') {
