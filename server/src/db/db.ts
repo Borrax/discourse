@@ -7,6 +7,7 @@ const connectToDb = (connectionStr: string): void => {
 
 export const initializeDb = (): void => {
   const dbUrl = 'mongodb://127.0.0.1:27017/discourse'
+  const dbTestDevUrl = 'mongodb://127.0.0.1:27017/discourseDevNTest'
 
   mongoose.connection.on('connecting', () => {
     console.log('Connecting to the DB')
@@ -16,5 +17,9 @@ export const initializeDb = (): void => {
     console.error(err)
   })
 
-  connectToDb(dbUrl)
+  if (process.env.NODE_ENV === 'test') {
+    connectToDb(dbUrl)
+  } else {
+    connectToDb(dbTestDevUrl)
+  }
 }
