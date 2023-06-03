@@ -2,12 +2,15 @@ import type { IncomingMessage, Server, ServerResponse } from 'http'
 import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals'
 import supertest from 'supertest'
 import { app } from '../server'
+import { initializeDb } from '../db/db'
+import mongoose from 'mongoose'
 
 let server: Server<typeof IncomingMessage, typeof ServerResponse>
 let request: supertest.SuperAgentTest
 
 describe('Express server testing', () => {
   beforeAll(() => {
+    initializeDb()
     server = app.listen(8000, () => {
       console.log('Server listening for tests')
     })
@@ -17,6 +20,8 @@ describe('Express server testing', () => {
 
   afterAll(() => {
     server.close()
+    mongoose.connection.close().then(() => {})
+      .catch(err => { console.error(err) })
   })
 
   describe('Testing GET to /', () => {
