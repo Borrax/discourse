@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express'
+import type { RequestHandler } from 'express'
 import type { UserRegData, UserRegResponse, UserRegResponseLoad } from 'shared/UserSharedTypes'
 import type { ErrorResponse, SuccessResponse } from 'shared/ServerResponseTypes'
 import { User } from '../models/user'
@@ -40,7 +40,7 @@ const isValidRegData = (regData: UserRegData | null): boolean => {
   return true
 }
 
-const register = async (req: Request, res: Response): Promise<undefined> => {
+const register = ((async (req, res) => {
   const regData: UserRegData | null = req.body
   let serverResponse: UserRegResponse | null = null
 
@@ -98,7 +98,7 @@ const register = async (req: Request, res: Response): Promise<undefined> => {
   serverResponse = createSuccessResponseObj(payloadForClient)
 
   res.json(serverResponse)
-}
+}) as RequestHandler)
 
 export const UserController = {
   register
