@@ -1,11 +1,14 @@
 import mongoose from 'mongoose'
 
-const connectToDb = (connectionStr: string): void => {
-  mongoose.connect(connectionStr).then(() => { console.log('Connected to db:', mongoose.connection.name) })
+const connectToDb = (connectionStr: string, successsCb: () => void): void => {
+  mongoose.connect(connectionStr).then(() => {
+    console.log('Connected to db:', mongoose.connection.name)
+    successsCb()
+  })
     .catch(err => { console.error(err) })
 }
 
-export const initializeDb = (): void => {
+export const initializeDb = (successCb = () => {}): void => {
   const dbUrl = 'mongodb://127.0.0.1:27017/discourse'
   const dbTestDevUrl = 'mongodb://127.0.0.1:27017/discourseDevNTest'
 
@@ -18,8 +21,8 @@ export const initializeDb = (): void => {
   })
 
   if (process.env.NODE_ENV === 'test') {
-    connectToDb(dbUrl)
+    connectToDb(dbUrl, successCb)
   } else {
-    connectToDb(dbTestDevUrl)
+    connectToDb(dbTestDevUrl, successCb)
   }
 }
