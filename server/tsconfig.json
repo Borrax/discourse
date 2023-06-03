@@ -10,11 +10,6 @@
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "baseUrl": "./",
-    "paths": {
-      "shared/*": ["../shared/*"],
-      "*": ["./src/*"]
-    },
     "rootDirs": ["./src/", "../shared/"]
   },
   "exclude": ["node_modules", "dist"]

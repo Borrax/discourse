@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
-import type { UserRegData, UserRegResponse, UserRegResponseLoad } from 'shared/UserSharedTypes'
-import type { ErrorResponse, SuccessResponse } from 'shared/ServerResponseTypes'
+import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../shared/UserSharedTypes'
+import type { ErrorResponse, SuccessResponse } from '../../../shared/ServerResponseTypes'
 import { User } from '../models/user'
 
 const isErrorResponseObj = (resp: UserRegResponse | null): boolean => {
