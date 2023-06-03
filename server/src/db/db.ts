@@ -8,6 +8,10 @@ const connectToDb = (connectionStr: string, successsCb: () => void): void => {
     .catch(err => { console.error(err) })
 }
 
+/**
+ * @function A function that connects the server to the database
+* @param successCb - A function that is called when the server is successfully connected to the db
+ */
 export const initializeDb = (successCb = () => {}): void => {
   const dbUrl = 'mongodb://127.0.0.1:27017/discourse'
   const dbTestDevUrl = 'mongodb://127.0.0.1:27017/discourseDevNTest'
