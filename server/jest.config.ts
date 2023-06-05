@@ -6,6 +6,7 @@
 export default {
   rootDir: './dist/server/src/tests/',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  maxWorkers: 1,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
