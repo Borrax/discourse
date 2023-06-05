@@ -2,13 +2,7 @@ import type { RequestHandler } from 'express'
 import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../shared/UserSharedTypes'
 import type { ErrorResponse, SuccessResponse } from '../../../shared/ServerResponseTypes'
 import { User } from '../models/user'
-
-const isErrorResponseObj = (resp: UserRegResponse | null): boolean => {
-  if (resp === null) return false
-  if ('err' in (resp as ErrorResponse)) return true
-
-  return false
-}
+import { isErrorResponseObj } from '../../../shared/serverResponseMethods'
 
 const createErrorResponseObj = (msg: string): ErrorResponse => {
   return {
