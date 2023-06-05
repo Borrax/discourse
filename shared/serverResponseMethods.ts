@@ -6,3 +6,9 @@ export const isErrorResponseObj = (resp: object | null): boolean => {
 
   return false
 }
+
+export const createErrorResponseObj = (msg: string): ErrorResponse => {
+  return {
+    err: msg
+  }
+}

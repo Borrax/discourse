@@ -1,14 +1,8 @@
 import type { RequestHandler } from 'express'
 import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../shared/UserSharedTypes'
-import type { ErrorResponse, SuccessResponse } from '../../../shared/ServerResponseTypes'
+import type { SuccessResponse } from '../../../shared/ServerResponseTypes'
 import { User } from '../models/user'
-import { isErrorResponseObj } from '../../../shared/serverResponseMethods'
-
-const createErrorResponseObj = (msg: string): ErrorResponse => {
-  return {
-    err: msg
-  }
-}
+import { isErrorResponseObj, createErrorResponseObj } from '../../../shared/serverResponseMethods'
 
 const createSuccessResponseObj = (load: UserRegResponseLoad): SuccessResponse<UserRegResponseLoad> => {
   return {
