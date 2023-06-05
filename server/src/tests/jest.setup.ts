@@ -11,13 +11,20 @@ beforeAll(async () => {
   await new Promise((res, _rej) => {
     initializeDb(() => { res(null) })
   })
-  server = app.listen(8000, () => {
+  server = app.listen(3000, () => {
     console.log('Server listening for tests')
   })
 })
 
-afterAll(() => {
-  server.close()
-  mongoose.connection.close().then(() => {})
+afterAll(async () => {
+  await mongoose.connection.close().then(() => {
+    console.log('Disconnected from the DB')
+  })
     .catch(err => { console.error(err) })
+  await new Promise((res) => {
+    server.close(() => { 
+      console.log('Server closed')
+      res(null)
+    }) 
+  })
 })
