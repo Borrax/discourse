@@ -1,28 +1,30 @@
-import type { IncomingMessage, Server, ServerResponse } from 'http'
-import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals'
-import supertest from 'supertest'
-import { app } from '../server'
-import { initializeDb } from '../db/db'
-import mongoose from 'mongoose'
-
-let server: Server<typeof IncomingMessage, typeof ServerResponse>
-let request: supertest.SuperAgentTest
+// import type { IncomingMessage, Server, ServerResponse } from 'http'
+// import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals'
+// import supertest from 'supertest'
+// import { app } from '../server'
+// import { initializeDb } from '../db/db'
+// import mongoose from 'mongoose'
+//
+// let server: Server<typeof IncomingMessage, typeof ServerResponse>
+// let request: supertest.SuperAgentTest
+import { request } from './jest.setup'
+import { describe, it, expect, jest } from '@jest/globals'
 
 describe('Express server testing', () => {
-  beforeAll(() => {
-    initializeDb()
-    server = app.listen(8000, () => {
-      console.log('Server listening for tests')
-    })
-
-    request = supertest.agent(server)
-  })
-
-  afterAll(() => {
-    server.close()
-    mongoose.connection.close().then(() => {})
-      .catch(err => { console.error(err) })
-  })
+  // beforeAll(() => {
+  //   initializeDb()
+  //   server = app.listen(8000, () => {
+  //     console.log('Server listening for tests')
+  //   })
+  //
+  //   request = supertest.agent(server)
+  // })
+  //
+  // afterAll(() => {
+  //   server.close()
+  //   mongoose.connection.close().then(() => {})
+  //     .catch(err => { console.error(err) })
+  // })
 
   describe('Testing GET to /', () => {
     it('should return status 200', async () => {
