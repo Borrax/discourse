@@ -1,14 +1,7 @@
 import type { RequestHandler } from 'express'
 import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../shared/UserSharedTypes'
-import type { SuccessResponse } from '../../../shared/ServerResponseTypes'
 import { User } from '../models/user'
-import { isErrorResponseObj, createErrorResponseObj } from '../../../shared/serverResponseMethods'
-
-const createSuccessResponseObj = (load: UserRegResponseLoad): SuccessResponse<UserRegResponseLoad> => {
-  return {
-    load
-  }
-}
+import { isErrorResponseObj, createErrorResponseObj, createSuccessResponseObj } from '../../../shared/serverResponseMethods'
 
 const isValidRegData = (regData: UserRegData | null): boolean => {
   if (regData === null || typeof regData !== 'object') {

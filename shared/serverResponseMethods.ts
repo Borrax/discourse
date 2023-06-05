@@ -1,4 +1,4 @@
-import type { ErrorResponse } from './ServerResponseTypes'
+import type { ErrorResponse, SuccessResponse } from './ServerResponseTypes'
 
 export const isErrorResponseObj = (resp: object | null): boolean => {
   if (resp === null) return false
@@ -12,3 +12,10 @@ export const createErrorResponseObj = (msg: string): ErrorResponse => {
     err: msg
   }
 }
+
+export const createSuccessResponseObj = <T>(load: T): SuccessResponse<T> => {
+  return {
+    load
+  }
+}
+
