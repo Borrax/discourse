@@ -1,5 +1,8 @@
-import { request } from './jest.setup'
 import { describe, it, expect, jest } from '@jest/globals'
+import { app } from '../server'
+import supertest from 'supertest'
+
+const request = supertest.agent(app)
 
 describe('Express server testing', () => {
   describe('Testing GET to /', () => {
