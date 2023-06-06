@@ -4,8 +4,8 @@
     "build": "tsc",
     "start": "node dist/server/src/start.js",
     "dev": "set NODE_ENV=development && nodemon --exec \"npm run build && npm start\"",
-    "test": "npm run build && jest",
-    "test:watch": "nodemon --exec \"npm run test\""
+    "test": "npm run build && jest --detectOpenHandles",
+    "test:watch": "nodemon --exec \"npm test\""
   },
   "devDependencies": {
     "@types/express": "4.17.17",
