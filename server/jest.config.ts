@@ -5,6 +5,8 @@
 
 export default {
   rootDir: './dist/server/src/tests/',
+  globalSetup: '<rootDir>/globalSetup.js',
+  globalTeardown: '<rootDir>/globalTeardown.js',
   maxWorkers: 1,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
