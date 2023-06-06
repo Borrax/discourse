@@ -8,6 +8,7 @@ export default {
   globalSetup: '<rootDir>/globalSetup.js',
   globalTeardown: '<rootDir>/globalTeardown.js',
   maxWorkers: 1,
+  verbose: true,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
