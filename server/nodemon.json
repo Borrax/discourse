@@ -1,7 +1,8 @@
 {
   "watch": [
     "src/",
-    "tsconfig.json"
+    "tsconfig.json",
+    "jest.config.ts"
   ],
   "env": {
     "NODE_ENV": "development"
