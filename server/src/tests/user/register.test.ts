@@ -2,8 +2,9 @@ import type { UserRegData } from '../../UserSharedTypes'
 import { describe, it, expect } from '@jest/globals'
 import supertest from 'supertest'
 import { apiPaths } from '../../../../shared/apiPaths'
-import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
+import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { app } from '../../server'
+import { User } from '../../models/user'
 
 const registerPath = apiPaths.user.register
 
@@ -12,10 +13,56 @@ const existingUser: UserRegData = {
   password: 'some_password'
 }
 
+const validUser: UserRegData = {
+  username: 'testUsername',
+  password: 'testPassword'
+}
+
+const removeUserFromDb = async (username: string) => {
+  await User.deleteOne({ username }).catch(err => {
+    console.error('Error deleting the user while running the tests')
+    console.error(err)
+  })
+}
+
 const request = supertest(app)
-// const request = supertest.agent(TEST_SERVER)
 
 describe('Testing the user registration API at ' + registerPath, () => {
+  it('should return status 200 when a valid user is registered', async () => {
+    const resp = await request.post(registerPath).send(validUser)
+
+    expect(resp.status).toBe(200)
+    await removeUserFromDb(validUser.username)
+  })
+
+  it('should return a success server response object when a valid user is registered', async () => {
+    const resp = await request.post(registerPath).send(validUser)
+
+    expect(resp.body).toBeDefined()
+    expect(isSuccessResponseObj(resp.body))
+      .toBe(true)
+
+    await removeUserFromDb(validUser.username)
+  })
+
+  it('the success server response\'s load should have the correct properties', async () => {
+    const resp = await request.post(registerPath).send(validUser)
+
+    expect(resp.body).toBeDefined()
+    expect(resp.body.load.username).toBeDefined()
+    expect(typeof resp.body.load.username).toBe('string')
+
+    await removeUserFromDb(validUser.username)
+  })
+
+  it('should have the correct success information', async () => {
+    const resp = await request.post(registerPath).send(validUser)
+
+    expect(resp.body.load.username).toBe(validUser.username)
+
+    await removeUserFromDb(validUser.username)
+  })
+
   it('should return a status 400 when the user already exists', async () => {
     const resp = await request.post(registerPath)
       .send(existingUser)
