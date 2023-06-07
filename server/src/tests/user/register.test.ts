@@ -70,28 +70,30 @@ describe('Testing the user registration API at ' + registerPath, () => {
       .send(existingUser)
     expect(resp.status).toBe(400)
   })
+  
+  describe('Testing when user is invalid', () => {
+    it('should return an error response object when the username exists', async () => {
+      const resp = await request.post(registerPath)
+        .send(existingUser)
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
 
-  it('should return an error response object when the username exists', async () => {
-    const resp = await request.post(registerPath)
-      .send(existingUser)
-    expect(isErrorResponseObj(resp.body)).toBe(true)
-  })
+    it('should contain an error message string when the user already exists', async () => {
+      const resp = await request.post(registerPath)
+        .send(existingUser)
 
-  it('should contain an error message string when the user already exists', async () => {
-    const resp = await request.post(registerPath)
-      .send(existingUser)
+      expect(resp.body.err).toBeDefined()
+      expect(typeof resp.body.err).toBe('string')
+      expect(resp.body.err.length).toBeGreaterThan(0)
+    })
 
-    expect(resp.body.err).toBeDefined()
-    expect(typeof resp.body.err).toBe('string')
-    expect(resp.body.err.length).toBeGreaterThan(0)
-  })
+    it(`should include words 'registered' or 'exists' in 
+  error message string when the user already exists`, async () => {
+      const resp = await request.post(registerPath)
+        .send(existingUser)
+      const regex = /(exists)|(registered)/g
 
-  it(`should include words 'registered' or 'exists' in 
-error message string when the user already exists`, async () => {
-    const resp = await request.post(registerPath)
-      .send(existingUser)
-    const regex = /(exists)|(registered)/g
-
-    expect(regex.test(resp.body.err)).toBe(true)
+      expect(regex.test(resp.body.err)).toBe(true)
+    })
   })
 })
