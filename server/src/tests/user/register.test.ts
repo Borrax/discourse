@@ -28,39 +28,41 @@ const removeUserFromDb = async (username: string): Promise<void> => {
 const request = supertest(app)
 
 describe('Testing the user registration API at ' + registerPath, () => {
-  it('should return status 200 when a valid user is registered', async () => {
-    const resp = await request.post(registerPath).send(validUser)
+  describe('Testing when a valid user is provided', () => {
+    it('should return status 200', async () => {
+      const resp = await request.post(registerPath).send(validUser)
 
-    expect(resp.status).toBe(200)
-    await removeUserFromDb(validUser.username)
-  })
+      expect(resp.status).toBe(200)
+      await removeUserFromDb(validUser.username)
+    })
 
-  it('should return a success server response object when a valid user is registered', async () => {
-    const resp = await request.post(registerPath).send(validUser)
+    it('should return a success server response object', async () => {
+      const resp = await request.post(registerPath).send(validUser)
 
-    expect(resp.body).toBeDefined()
-    expect(isSuccessResponseObj(resp.body))
-      .toBe(true)
+      expect(resp.body).toBeDefined()
+      expect(isSuccessResponseObj(resp.body))
+        .toBe(true)
 
-    await removeUserFromDb(validUser.username)
-  })
+      await removeUserFromDb(validUser.username)
+    })
 
-  it('the success server response\'s load should have the correct properties', async () => {
-    const resp = await request.post(registerPath).send(validUser)
+    it('the success server response\'s load should have the correct properties', async () => {
+      const resp = await request.post(registerPath).send(validUser)
 
-    expect(resp.body).toBeDefined()
-    expect(resp.body.load.username).toBeDefined()
-    expect(typeof resp.body.load.username).toBe('string')
+      expect(resp.body).toBeDefined()
+      expect(resp.body.load.username).toBeDefined()
+      expect(typeof resp.body.load.username).toBe('string')
 
-    await removeUserFromDb(validUser.username)
-  })
+      await removeUserFromDb(validUser.username)
+    })
 
-  it('should have the correct success information', async () => {
-    const resp = await request.post(registerPath).send(validUser)
+    it('should have the correct success information', async () => {
+      const resp = await request.post(registerPath).send(validUser)
 
-    expect(resp.body.load.username).toBe(validUser.username)
+      expect(resp.body.load.username).toBe(validUser.username)
 
-    await removeUserFromDb(validUser.username)
+      await removeUserFromDb(validUser.username)
+    })
   })
 
   it('should return a status 400 when the user already exists', async () => {
