@@ -18,7 +18,7 @@ const validUser: UserRegData = {
   password: 'testPassword'
 }
 
-const removeUserFromDb = async (username: string) => {
+const removeUserFromDb = async (username: string): Promise<void> => {
   await User.deleteOne({ username }).catch(err => {
     console.error('Error deleting the user while running the tests')
     console.error(err)
