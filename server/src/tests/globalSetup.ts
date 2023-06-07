@@ -16,6 +16,6 @@ export default async (): Promise<void> => {
     })
   })
 
-  globalThis.__SERVER__ = server
-  globalThis.__DB__ = mongoose.connection
+  globalThis.TEST_SERVER = server
+  globalThis.TEST_DB = mongoose.connection
 }

@@ -11,7 +11,7 @@ const existingUser: UserRegData = {
   password: 'some_password'
 }
 
-const request = supertest.agent(globalThis.__SERVER__)
+const request = supertest.agent(globalThis.TEST_SERVER)
 
 describe('Testing the user registration API at ' + registerPath, () => {
   it('should return a status 400 when the user already exists', async () => {
@@ -34,6 +34,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
     expect(typeof resp.body.err).toBe('string')
     expect(resp.body.err.length).toBeGreaterThan(0)
   })
+
   it(`should include words 'registered' or 'exists' in 
 error message string when the user already exists`, async () => {
     const resp = await request.post(registerPath)
