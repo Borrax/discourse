@@ -3,6 +3,7 @@ import { describe, it, expect } from '@jest/globals'
 import supertest from 'supertest'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
+import { app } from '../../server'
 
 const registerPath = apiPaths.user.register
 
@@ -11,7 +12,8 @@ const existingUser: UserRegData = {
   password: 'some_password'
 }
 
-const request = supertest.agent(globalThis.TEST_SERVER)
+const request = supertest(app)
+// const request = supertest.agent(TEST_SERVER)
 
 describe('Testing the user registration API at ' + registerPath, () => {
   it('should return a status 400 when the user already exists', async () => {

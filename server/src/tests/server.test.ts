@@ -1,8 +1,8 @@
 import { describe, it, expect, jest } from '@jest/globals'
-import { app } from '../server'
 import supertest from 'supertest'
+import { app } from '../server'
 
-const request = supertest.agent(app)
+const request = supertest(app)
 
 describe('Testing GET to /', () => {
   it('should return status 200', async () => {
@@ -24,6 +24,7 @@ describe('Testing server\'s ability to handle json', () => {
       "subject": "bad json"
     }`
 
+    // surpressing the displaying of the console error for
     jest.spyOn(console, 'error').mockImplementation(() => {})
 
     const resp = await request.post('/test/json')
@@ -39,8 +40,6 @@ describe('Testing server\'s ability to handle json', () => {
       "subject": "bad json"
     }`
 
-    // surpressing the displaying of the console error for
-    // his test
     jest.spyOn(console, 'error').mockImplementation(() => {})
 
     await request.post('/test/json')
