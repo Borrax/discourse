@@ -153,20 +153,6 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
-      test('when password is an empty str', async () => {
-        const invalidUser = {
-          passwrod: '',
-          username: 'someUsername'
-        }
-
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
-
-        expect(resp.status).toBe(400)
-        expect(resp.body).toBeDefined()
-        expect(isErrorResponseObj(resp.body)).toBe(true)
-      })
-
       test('when username is below 3 chars', async () => {
         const invalidUser = {
           passwrod: 'somePass',
@@ -194,6 +180,21 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
+
+      test('when password is an empty str', async () => {
+        const invalidUser = {
+          passwrod: '',
+          username: 'someUsername'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
 
       test('when password is below 6 chars', async () => {
         const invalidUser = {
