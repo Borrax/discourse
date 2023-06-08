@@ -10,11 +10,13 @@ const isValidRegData = (regData: UserRegData | null): boolean => {
 
   const { username, password } = regData
 
-  if (username == null || typeof username !== 'string') {
+  if (username == null || typeof username !== 'string' ||
+    username.length < 3) {
     return false
   }
 
-  if (password == null || typeof password !== 'string') {
+  if (password == null || typeof password !== 'string' ||
+    password.length < 6) {
     return false
   }
 
