@@ -1,5 +1,5 @@
 import type { UserRegData } from '../../UserSharedTypes'
-import { describe, it, expect } from '@jest/globals'
+import { describe, it, expect, test } from '@jest/globals'
 import supertest from 'supertest'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
@@ -93,6 +93,107 @@ describe('Testing the user registration API at ' + registerPath, () => {
       const regex = /(exists)|(registered)/g
 
       expect(regex.test(resp.body.err)).toBe(true)
+    })
+  })
+
+  describe('Testing invalid input data', () => {
+    it('should return status 400', async () => {
+      const invalidUser = { username: 'invalidUser' }
+      const resp = await request.post(registerPath)
+        .send(invalidUser)
+
+      expect(resp.status).toBe(400)
+    })
+
+    describe('should return an error response', () => {
+      test('when no username property', async () => {
+        const invalidUser = { password: 'somePass' }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when no password property', async () => {
+        const invalidUser = { username: 'someUsername' }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when an empty object', async () => {
+        const invalidUser = {}
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when username is an empty str', async () => {
+        const invalidUser = {
+          username: '',
+          password: 'somePass'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when password is an empty str', async () => {
+        const invalidUser = {
+          passwrod: '',
+          username: 'someUsername'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when username is below 3 chars', async () => {
+        const invalidUser = {
+          passwrod: 'somePass',
+          username: 'so'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when password is below 6 chars', async () => {
+        const invalidUser = {
+          passwrod: 'someP',
+          username: 'someUsername'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
     })
   })
 })
