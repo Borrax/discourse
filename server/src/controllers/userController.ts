@@ -4,7 +4,7 @@ import { User } from '../models/user'
 import { isErrorResponseObj, createErrorResponseObj, createSuccessResponseObj } from '../../../shared/serverResponseMethods'
 
 // the new user's username and password length lower and upper limits
-const MIN_USERNAME_LEN = 5
+const MIN_USERNAME_LEN = 3
 const MAX_USERNAME_LEN = 20
 const MIN_PASSWORD_LEN = 6
 const MAX_PASSWORD_LEN = 30

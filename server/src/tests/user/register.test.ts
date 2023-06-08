@@ -181,9 +181,37 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
+      test('when username is above 20 chars', async () => {
+        const invalidUser = {
+          passwrod: 'somePass',
+          username: 'someUsernameLongerThan20Chars'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
       test('when password is below 6 chars', async () => {
         const invalidUser = {
           passwrod: 'someP',
+          username: 'someUsername'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when password is longer than 30 chars', async () => {
+        const invalidUser = {
+          passwrod: 'somePasswordThatIsReallyReallyLong',
           username: 'someUsername'
         }
 
