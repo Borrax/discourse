@@ -3,32 +3,45 @@ import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../..
 import { User } from '../models/user'
 import { isErrorResponseObj, createErrorResponseObj, createSuccessResponseObj } from '../../../shared/serverResponseMethods'
 
-const isValidRegData = (regData: UserRegData | null): boolean => {
+/**
+* @function Goes through the the fields of the user registration
+* and looks for inconsistencies
+* @return A string with the error message if it finds
+* anything or null if it doesn't
+*/
+const findErrInRegData = (regData: UserRegData | null): string | null => {
   if (regData === null || typeof regData !== 'object') {
-    return false
+    return 'No registration data provided'
   }
 
   const { username, password } = regData
 
-  if (username == null || typeof username !== 'string' ||
-    username.length < 3) {
-    return false
+  if (username == null || typeof username !== 'string') {
+    return 'Missing username'
   }
 
-  if (password == null || typeof password !== 'string' ||
-    password.length < 6) {
-    return false
+  if (username.length < 5) {
+    return 'Username should be more than 4 characters'
   }
 
-  return true
+  if (password == null || typeof password !== 'string') {
+    return 'Missing password'
+  }
+
+  if (password.length < 6) {
+    return 'Password should be more than 5 characters'
+  }
+
+  return null
 }
 
 const register = ((async (req, res) => {
   const regData: UserRegData | null = req.body
   let serverResponse: UserRegResponse | null = null
 
-  if (!isValidRegData(regData)) {
-    serverResponse = createErrorResponseObj('Invalid registration data')
+  const errorMsg = findErrInRegData(regData)
+  if (errorMsg !== null) {
+    serverResponse = createErrorResponseObj(errorMsg)
     res.status(400).json(serverResponse)
     return
   }
