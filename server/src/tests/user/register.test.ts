@@ -181,6 +181,20 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
+      test('when username contains spaces', async () => {
+        const invalidUser = {
+          passwrod: 'somePassword',
+          username: 'some Username'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
       test('when password is an empty str', async () => {
         const invalidUser = {
           passwrod: '',
@@ -194,7 +208,6 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
-
 
       test('when password is below 6 chars', async () => {
         const invalidUser = {
@@ -213,6 +226,20 @@ describe('Testing the user registration API at ' + registerPath, () => {
       test('when password is longer than 30 chars', async () => {
         const invalidUser = {
           passwrod: 'somePasswordThatIsReallyReallyLong',
+          username: 'someUsername'
+        }
+
+        const resp = await request.post(registerPath)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(resp.body).toBeDefined()
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when password contains spaces', async () => {
+        const invalidUser = {
+          passwrod: 'some Password',
           username: 'someUsername'
         }
 
