@@ -3,6 +3,12 @@ import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../..
 import { User } from '../models/user'
 import { isErrorResponseObj, createErrorResponseObj, createSuccessResponseObj } from '../../../shared/serverResponseMethods'
 
+// the new user's username and password length lower and upper limits
+const MIN_USERNAME_LEN = 5
+const MAX_USERNAME_LEN = 20
+const MIN_PASSWORD_LEN = 6
+const MAX_PASSWORD_LEN = 30
+
 /**
 * @function Goes through the the fields of the user registration
 * and looks for inconsistencies
@@ -20,16 +26,18 @@ const findErrInRegData = (regData: UserRegData | null): string | null => {
     return 'Missing username'
   }
 
-  if (username.length < 5) {
-    return 'Username should be more than 4 characters'
+  if (username.length < MIN_USERNAME_LEN ||
+    username.length > MAX_USERNAME_LEN) {
+    return `Username should be between ${MIN_USERNAME_LEN} and ${MAX_USERNAME_LEN} characters long`
   }
 
   if (password == null || typeof password !== 'string') {
     return 'Missing password'
   }
 
-  if (password.length < 6) {
-    return 'Password should be more than 5 characters'
+  if (password.length < MIN_PASSWORD_LEN ||
+  password.length > MAX_PASSWORD_LEN) {
+    return `Password should be between ${MIN_PASSWORD_LEN} and ${MAX_PASSWORD_LEN} characters long`
   }
 
   return null
