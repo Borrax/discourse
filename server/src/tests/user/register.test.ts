@@ -113,6 +113,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
       const resp = await request.post(registerPath)
         .send(invalidUser)
 
+      const userInDb = await User.findOne({
+        username: invalidUser.username
+      })
+
+      expect(userInDb).toBe(null)
       expect(resp.status).toBe(400)
     })
 
@@ -134,6 +139,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -159,6 +169,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -173,6 +188,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -187,6 +207,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -201,6 +226,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -215,6 +245,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -229,6 +264,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -243,6 +283,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -257,6 +302,11 @@ describe('Testing the user registration API at ' + registerPath, () => {
         const resp = await request.post(registerPath)
           .send(invalidUser)
 
+        const userInDb = await User.findOne({
+          username: invalidUser.username
+        })
+
+        expect(userInDb).toBe(null)
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
         expect(isErrorResponseObj(resp.body)).toBe(true)
