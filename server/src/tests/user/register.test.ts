@@ -46,6 +46,17 @@ describe('Testing the user registration API at ' + registerPath, () => {
       await removeUserFromDb(validUser.username)
     })
 
+    it('should be tecorded to the DB', async () => {
+      await request.post(registerPath).send(validUser)
+
+      const user = await User.findOne({ username: validUser.username })
+
+      expect(user).toBeDefined()
+      expect(user?.username).toBe(validUser.username)
+
+      await removeUserFromDb(validUser.username)
+    })
+
     it('the success server response\'s load should have the correct properties', async () => {
       const resp = await request.post(registerPath).send(validUser)
 
