@@ -22,3 +22,16 @@ export type UserRegResponseLoad = {
 * upon user registration call
 */
 export type UserRegResponse = ServerResponse<UserRegResponseLoad>
+
+/**
+* @type The payload of the server response after a successful login
+*/
+export type UserLoginLoad = {
+  token: string
+}
+
+/**
+* @type The type of the server response on an attempt to login
+* by the user
+*/
+export type UserLoginResponse = ServerResponse<UserLoginLoad>
