@@ -1,4 +1,4 @@
-import type { ErrorResponse, SuccessResponse } from '../../../shared/ServerResponseTypes'
+import type { ErrorResponse, SuccessResponse } from '../../../shared/types/ServerResponseTypes'
 
 export const createErrorResponseObj = (msg: string): ErrorResponse => {
   return {

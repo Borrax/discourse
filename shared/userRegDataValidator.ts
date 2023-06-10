@@ -1,4 +1,4 @@
-import type { UserRegData } from './UserSharedTypes'
+import type { UserRegData } from './types/UserSharedTypes'
 
 // the new user's username and password length lower and upper limits
 const MIN_USERNAME_LEN = 3

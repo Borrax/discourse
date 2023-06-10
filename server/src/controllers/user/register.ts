@@ -1,6 +1,6 @@
 
 import type { RequestHandler } from 'express'
-import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../../shared/UserSharedTypes'
+import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../../shared/types/UserSharedTypes'
 import { User } from '../../models/user'
 import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 import { findErrInRegData } from '../../../../shared/userRegDataValidator'

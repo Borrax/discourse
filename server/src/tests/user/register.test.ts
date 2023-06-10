@@ -1,4 +1,4 @@
-import type { UserRegData } from '../../UserSharedTypes'
+import type { UserRegData } from '../../../../shared/types/UserSharedTypes'
 import { describe, it, expect, test } from '@jest/globals'
 import supertest from 'supertest'
 import { apiPaths } from '../../../../shared/apiPaths'
