@@ -1,8 +1,8 @@
 import type { RequestHandler } from 'express'
-import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../shared/UserSharedTypes'
-import { User } from '../models/user'
-import { isErrorResponseObj, createErrorResponseObj, createSuccessResponseObj } from '../../../shared/serverResponseMethods'
-import { findErrInRegData } from '../../../shared/userRegDataValidator'
+import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../../shared/UserSharedTypes'
+import { User } from '../../models/user'
+import { isErrorResponseObj, createErrorResponseObj, createSuccessResponseObj } from '../../../../shared/serverResponseMethods'
+import { findErrInRegData } from '../../../../shared/userRegDataValidator'
 
 const register = ((async (req, res) => {
   const regData: UserRegData | null = req.body
