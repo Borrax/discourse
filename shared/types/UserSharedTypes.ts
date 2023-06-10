@@ -24,6 +24,15 @@ export type UserRegResponseLoad = {
 export type UserRegResponse = ServerResponse<UserRegResponseLoad>
 
 /**
+* @type The type of data the client needs to provide the server on
+* a login request
+*/
+export type UserLoginData = {
+  username: string,
+  password: string
+}
+
+/**
 * @type The payload of the server response after a successful login
 */
 export type UserLoginLoad = {
