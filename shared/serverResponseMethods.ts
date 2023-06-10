@@ -13,16 +13,3 @@ export const isErrorResponseObj = (obj: ErrorResponse | null): boolean => {
 
   return false
 }
-
-export const createErrorResponseObj = (msg: string): ErrorResponse => {
-  return {
-    err: msg
-  }
-}
-
-export const createSuccessResponseObj = <T>(load: T): SuccessResponse<T> => {
-  return {
-    load
-  }
-}
-

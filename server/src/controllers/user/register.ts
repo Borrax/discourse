@@ -2,8 +2,9 @@
 import type { RequestHandler } from 'express'
 import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../../shared/UserSharedTypes'
 import { User } from '../../models/user'
-import { isErrorResponseObj, createErrorResponseObj, createSuccessResponseObj } from '../../../../shared/serverResponseMethods'
+import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 import { findErrInRegData } from '../../../../shared/userRegDataValidator'
+import { createErrorResponseObj, createSuccessResponseObj } from '../../utils/serverResponseMethods'
 
 export const register = ((async (req, res) => {
   const regData: UserRegData | null = req.body
