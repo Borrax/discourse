@@ -37,3 +37,13 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
     expect(regex.test(resp.body.err)).toBe(true)
   })
 })
+
+describe('Testing when invalid input is provided', () => {
+  it('should return status 400', async () => {
+    const invalidReqPayload = {}
+    const resp = await request.post(apiPaths.user.login)
+      .send(invalidReqPayload)
+
+    expect(resp.status).toBe(400)
+  })
+})
