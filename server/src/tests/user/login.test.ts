@@ -3,7 +3,7 @@ import supertest from 'supertest'
 import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { app } from '../../server'
-import { isErrorResponseObj } from '../../serverResponseMethods'
+import { isErrorResponseObj, isSuccessResponseObj } from '../../serverResponseMethods'
 
 const request = supertest(app)
 
@@ -108,6 +108,29 @@ describe('Testing when invalid input is provided', () => {
 
       expect(resp.status).toBe(400)
       expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
+  })
+
+  describe('Testing when the correct login credentials are provided', () => {
+    it('should return status 200', async () => {
+      const resp = await request.post(apiPaths.user.login)
+        .send(existingUser)
+
+      expect(resp.status).toBe(200)
+    })
+
+    it('should return a success response object', async () => {
+      const resp = await request.post(apiPaths.user.login)
+        .send(existingUser)
+
+      expect(isSuccessResponseObj(resp.body)).toBe(true)
+    })
+
+    it('should contain a jwt', async () => {
+      const resp = await request.post(apiPaths.user.login)
+        .send(existingUser)
+
+      expect(typeof resp.body.token).toBe('string')
     })
   })
 })
