@@ -1,6 +1,6 @@
 import type { UserLoginData } from '../../../../shared/types/UserSharedTypes'
 import supertest from 'supertest'
-import { describe, it, expect } from '@jest/globals'
+import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { app } from '../../server'
 import { isErrorResponseObj } from '../../serverResponseMethods'
@@ -45,5 +45,16 @@ describe('Testing when invalid input is provided', () => {
       .send(invalidReqPayload)
 
     expect(resp.status).toBe(400)
+  })
+
+  describe('should return error response', () => {
+    test('when no username is provided', async () => {
+      const invalidReqPayload = { password: 'somePass' }
+      const resp = await request.post(apiPaths.user.login)
+        .send(invalidReqPayload)
+
+      expect(resp.status).toBe(400)
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
   })
 })
