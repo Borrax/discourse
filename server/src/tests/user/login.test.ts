@@ -96,5 +96,18 @@ describe('Testing when invalid input is provided', () => {
       expect(resp.status).toBe(400)
       expect(isErrorResponseObj(resp.body)).toBe(true)
     })
+
+    test('when wrong password is provided', async () => {
+      const invalidReqPayload = {
+        username: existingUser.username,
+        password: 'someRandomPassword'
+      }
+
+      const resp = await request.post(apiPaths.user.login)
+        .send(invalidReqPayload)
+
+      expect(resp.status).toBe(400)
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
   })
 })
