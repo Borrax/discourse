@@ -7,7 +7,9 @@ const PASSWORD_REGEX = USERNAME_REGEX
 * @const An object containing all the allowed limits for the username
 * and the password lengths of the registering user
 */
-export const allowedUserRegLengths = {
+export const allowedUserRegLengths: {
+  [key:string]: number
+} = {
   MIN_USERNAME_LEN: 3,
   MAX_USERNAME_LEN: 20,
   MIN_PASSWORD_LEN: 5,
