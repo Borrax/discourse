@@ -1,4 +1,4 @@
-import type{ UserLoginData } from '../../../../shared/types/UserSharedTypes'
+import type { UserLoginData } from '../../../../shared/types/UserSharedTypes'
 import supertest from 'supertest'
 import { describe, it, expect } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
@@ -12,7 +12,7 @@ const nonExistingUser: UserLoginData = {
   password: 'somePass'
 }
 
-describe('Testing the user login at ' + apiPaths.user.login , () => {
+describe('Testing the user login at ' + apiPaths.user.login, () => {
   describe('Testing when user doesn\'t exist', () => {
     it('should return status 400 when the user doesn\'t exist', async () => {
       const resp = await request.post(apiPaths.user.login)
@@ -23,18 +23,17 @@ describe('Testing the user login at ' + apiPaths.user.login , () => {
   })
 
   it('should return an error response object', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(nonExistingUser)
+    const resp = await request.post(apiPaths.user.login)
+      .send(nonExistingUser)
 
-      expect(isErrorResponseObj(resp.body)).toBe(true)
+    expect(isErrorResponseObj(resp.body)).toBe(true)
   })
 
-  it('should contain the words \'exists\' or \'registered\' in the error'
-  + 'message', async () => {
-      const regex = /(exists)|(registered)/ig
-      const resp = await request.post(apiPaths.user.login)
-        .send(nonExistingUser)
-      
-      expect(regex.test(resp.body.err)).toBe(true)
+  it('should contain the words \'exists\' or \'registered\' in the error' + 'message', async () => {
+    const regex = /(exists)|(registered)/ig
+    const resp = await request.post(apiPaths.user.login)
+      .send(nonExistingUser)
+
+    expect(regex.test(resp.body.err)).toBe(true)
   })
 })
