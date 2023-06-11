@@ -3,6 +3,10 @@ import type { UserRegData } from './types/UserSharedTypes'
 const USERNAME_REGEX = /^\S*$/
 const PASSWORD_REGEX = USERNAME_REGEX
 
+/**
+* @const An object containing all the allowed limits for the username
+* and the password lengths of the registering user
+*/
 export const allowedUserRegLengths = {
   MIN_USERNAME_LEN: 3,
   MAX_USERNAME_LEN: 20,
