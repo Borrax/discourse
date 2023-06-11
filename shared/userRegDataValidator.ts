@@ -1,13 +1,17 @@
 import type { UserRegData } from './types/UserSharedTypes'
 
-// the new user's username and password length lower and upper limits
-const MIN_USERNAME_LEN = 3
-const MAX_USERNAME_LEN = 20
-const MIN_PASSWORD_LEN = 6
-const MAX_PASSWORD_LEN = 30
-// matches the string unless it contains spaces
 const USERNAME_REGEX = /^\S*$/
 const PASSWORD_REGEX = USERNAME_REGEX
+
+export const allowedUserRegLengths = {
+  MIN_USERNAME_LEN: 3,
+  MAX_USERNAME_LEN: 20,
+  MIN_PASSWORD_LEN: 5,
+  MAX_PASSWORD_LEN: 30
+}
+
+const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = 
+  allowedUserRegLengths
 
 /**
 * @function Goes through the the fields of the user registration
