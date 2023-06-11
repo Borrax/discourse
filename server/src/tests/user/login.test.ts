@@ -12,6 +12,11 @@ const nonExistingUser: UserLoginData = {
   password: 'somePass'
 }
 
+const existingUser: UserLoginData = {
+  username: 'existing_username',
+  password: 'some_password'
+}
+
 describe('Testing the user login at ' + apiPaths.user.login, () => {
   describe('Testing when user doesn\'t exist', () => {
     it('should return status 400 when the user doesn\'t exist', async () => {
@@ -50,6 +55,41 @@ describe('Testing when invalid input is provided', () => {
   describe('should return error response', () => {
     test('when no username is provided', async () => {
       const invalidReqPayload = { password: 'somePass' }
+      const resp = await request.post(apiPaths.user.login)
+        .send(invalidReqPayload)
+
+      expect(resp.status).toBe(400)
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
+
+    test('when no password is provided', async () => {
+      const invalidReqPayload = { username: existingUser.username }
+      const resp = await request.post(apiPaths.user.login)
+        .send(invalidReqPayload)
+
+      expect(resp.status).toBe(400)
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
+
+    test('when username is an empty string', async () => {
+      const invalidReqPayload = {
+        username: '',
+        password: existingUser.password
+      }
+
+      const resp = await request.post(apiPaths.user.login)
+        .send(invalidReqPayload)
+
+      expect(resp.status).toBe(400)
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
+
+    test('when the password is an empty string', async () => {
+      const invalidReqPayload = {
+        username: existingUser.username,
+        password: ''
+      }
+
       const resp = await request.post(apiPaths.user.login)
         .send(invalidReqPayload)
 
