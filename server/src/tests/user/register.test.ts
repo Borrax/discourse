@@ -5,6 +5,9 @@ import { apiPaths } from '../../../../shared/apiPaths'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { app } from '../../server'
 import { User } from '../../models/user'
+import { allowedUserRegLengths } from '../../../../shared/userRegDataValidator'
+
+const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = allowedUserRegLengths
 
 const registerPath = apiPaths.user.register
 
@@ -179,7 +182,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
-      test('when username is below 3 chars', async () => {
+      test(`when username is below ${MIN_USERNAME_LEN} chars`, async () => {
         const invalidUser = {
           passwrod: 'somePass',
           username: 'so'
@@ -198,7 +201,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
-      test('when username is above 20 chars', async () => {
+      test(`when username is above ${MAX_USERNAME_LEN} chars`, async () => {
         const invalidUser = {
           passwrod: 'somePass',
           username: 'someUsernameLongerThan20Chars'
@@ -255,7 +258,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
-      test('when password is below 6 chars', async () => {
+      test(`when password is below ${MIN_PASSWORD_LEN} chars`, async () => {
         const invalidUser = {
           passwrod: 'someP',
           username: 'someUsername'
@@ -274,7 +277,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
-      test('when password is longer than 30 chars', async () => {
+      test(`when password is longer than ${MAX_PASSWORD_LEN} chars`, async () => {
         const invalidUser = {
           passwrod: 'somePasswordThatIsReallyReallyLong',
           username: 'someUsername'
