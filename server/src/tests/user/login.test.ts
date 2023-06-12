@@ -3,7 +3,7 @@ import supertest from 'supertest'
 import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { app } from '../../server'
-import { isErrorResponseObj, isSuccessResponseObj } from '../../serverResponseMethods'
+import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 
 const request = supertest(app)
 
