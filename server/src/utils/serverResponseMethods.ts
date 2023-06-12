@@ -6,6 +6,11 @@ import type { ErrorResponse, SuccessResponse } from '../../../shared/types/Serve
 * @returns An error server response onject
 */
 export const createErrorResponseObj = (msg: string | null): ErrorResponse => {
+  if (typeof msg !== 'string' && msg !== null) {
+    throw new TypeError('Wrong input of the error response creator\n' +
+      'Expected string or null and got ' + typeof msg)
+  }
+
   return {
     err: msg
   }
