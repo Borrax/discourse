@@ -5,7 +5,7 @@ import type { ErrorResponse, SuccessResponse } from '../../../shared/types/Serve
 * that will be sent to the client
 * @returns An error server response onject
 */
-export const createErrorResponseObj = (msg: string): ErrorResponse => {
+export const createErrorResponseObj = (msg: string | null): ErrorResponse => {
   return {
     err: msg
   }

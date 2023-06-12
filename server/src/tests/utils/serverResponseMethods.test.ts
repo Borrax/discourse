@@ -4,7 +4,7 @@ import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 
 describe('Testing the server response methods', () => {
   describe('The error response obj creator', () => {
-    const errorMsg = 'test errro'
+    const errorMsg = 'test error'
 
     test('to throw an error when null or undefined is passed', () => {
       expect(createErrorResponseObj(null as any))
@@ -25,7 +25,7 @@ describe('Testing the server response methods', () => {
       expect(createErrorResponseObj(true as any))
         .toThrowError()
     })
-    
+
     test('to reutn error response obj when the string is empty', () => {
       const respObj = createErrorResponseObj('')
       expect(isErrorResponseObj(respObj)).toBe(true)
