@@ -6,9 +6,7 @@ describe('Testing the server response methods', () => {
   describe('The error response obj creator', () => {
     const errorMsg = 'test error'
 
-    test('to throw an error when null or undefined is passed', () => {
-      expect(createErrorResponseObj(null as any))
-        .toThrowError()
+    test('to throw an error when input is', () => {
       expect(createErrorResponseObj(undefined as any))
         .toThrowError()
     })
@@ -26,7 +24,12 @@ describe('Testing the server response methods', () => {
         .toThrowError()
     })
 
-    test('to reutn error response obj when the string is empty', () => {
+    test('to return an error response object when the input is null', () => {
+      expect(createErrorResponseObj(null))
+        .toThrowError()
+    })
+
+    test('to return an error response obj when the string is empty', () => {
       const respObj = createErrorResponseObj('')
       expect(isErrorResponseObj(respObj)).toBe(true)
     })
