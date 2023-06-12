@@ -4,6 +4,7 @@ import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { app } from '../../server'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
+import { isJWT } from '../../utils/isJWT'
 
 const request = supertest(app)
 
@@ -131,6 +132,7 @@ describe('Testing when invalid input is provided', () => {
         .send(existingUser)
 
       expect(typeof resp.body.token).toBe('string')
+      expect(isJWT(resp.body.token)).toBe(true)
     })
   })
 })
