@@ -7,6 +7,10 @@ describe('Testing the server response methods', () => {
     const errorMsg = 'test error'
 
     it('error message should be null when input message is undefined', () => {
+      // disable the error message
+      const mockFn = jest.fn()
+      console.error = mockFn
+
       const resp = createErrorResponseObj(undefined as any)
       expect(isErrorResponseObj(resp)).toBe(true)
       expect(resp.err).toBe(null)
@@ -18,6 +22,32 @@ describe('Testing the server response methods', () => {
 
       createErrorResponseObj(undefined as any)
       expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+    })
+
+    it('should return null when non-string and non-null msg is provided', () => {
+      // disable the error message
+      const mockFn = jest.fn()
+      console.error = mockFn
+
+      let resp = createErrorResponseObj(5 as any)
+      expect(isErrorResponseObj(resp)).toBe(true)
+      expect(resp.err).toBe(null)
+
+      resp = createErrorResponseObj(5.2 as any)
+      expect(isErrorResponseObj(resp)).toBe(true)
+      expect(resp.err).toBe(null)
+
+      resp = createErrorResponseObj([] as any)
+      expect(isErrorResponseObj(resp)).toBe(true)
+      expect(resp.err).toBe(null)
+
+      resp = createErrorResponseObj({} as any)
+      expect(isErrorResponseObj(resp)).toBe(true)
+      expect(resp.err).toBe(null)
+
+      resp = createErrorResponseObj(true as any)
+      expect(isErrorResponseObj(resp)).toBe(true)
+      expect(resp.err).toBe(null)
     })
 
     it('should log an error by the error logger when input is not a string', () => {
