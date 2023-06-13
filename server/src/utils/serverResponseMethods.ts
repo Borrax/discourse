@@ -23,6 +23,12 @@ export const createErrorResponseObj = (msg: string | null): ErrorResponse => {
 * @returns An success server response onject
 */
 export const createSuccessResponseObj = <T>(load: T | null): SuccessResponse<T> => {
+  if (load === undefined) {
+    load = null
+    errorLogger(new TypeError(`Received undefined as an input in
+the success response object creator`))
+  }
+
   return {
     load
   }

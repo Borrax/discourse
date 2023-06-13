@@ -77,5 +77,19 @@ describe('Testing the server response methods', () => {
       expect(isSuccessResponseObj(resp)).toBe(true)
       expect(Array.isArray(resp.load)).toBe(true)
     })
+
+    it('should return a success objec\'s load to be null with undefined input', () => {
+      const resp = createSuccessResponseObj(undefined as any)
+      expect(isSuccessResponseObj(resp)).toBe(true)
+      expect(resp.load).toBe(null)
+    })
+
+    it('should use the error logger when an undefined load is passed', () => {
+      const mockFn = jest.fn()
+      console.error = mockFn
+
+      createSuccessResponseObj(undefined as any)
+      expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+    })
   })
 })
