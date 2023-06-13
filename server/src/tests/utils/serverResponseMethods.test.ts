@@ -13,15 +13,15 @@ describe('Testing the server response methods', () => {
 
     test('to throw an error when non-string type is passed', () => {
       expect(() => createErrorResponseObj(5 as any))
-        .toThrow()
+        .toThrow(TypeError)
       expect(() => createErrorResponseObj(5.2 as any))
-        .toThrow()
+        .toThrow(TypeError)
       expect(() => createErrorResponseObj([] as any))
-        .toThrow()
+        .toThrow(TypeError)
       expect(() => createErrorResponseObj({} as any))
-        .toThrow()
+        .toThrow(TypeError)
       expect(() => createErrorResponseObj(true as any))
-        .toThrow()
+        .toThrow(TypeError)
     })
 
     test('to return an error response object when the input is null', () => {
