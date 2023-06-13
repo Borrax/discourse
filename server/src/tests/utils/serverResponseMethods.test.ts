@@ -1,4 +1,4 @@
-import { describe, test, expect, it } from '@jest/globals'
+import { describe, test, expect, it, jest } from '@jest/globals'
 import { createErrorResponseObj, createSuccessResponseObj } from '../../utils/serverResponseMethods'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 
@@ -6,22 +6,28 @@ describe('Testing the server response methods', () => {
   describe('The error response obj creator', () => {
     const errorMsg = 'test error'
 
-    test('to throw an error when input is undefined', () => {
-      expect(() => createErrorResponseObj(undefined as any))
-        .toThrow(TypeError)
+    it('should log an error by the error logger when input is undefined', () => {
+      const mockFn = jest.fn()
+      console.error = mockFn
+
+      createErrorResponseObj(undefined as any)
+      expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
     })
 
-    test('to throw an error when non-string type is passed', () => {
-      expect(() => createErrorResponseObj(5 as any))
-        .toThrow(TypeError)
-      expect(() => createErrorResponseObj(5.2 as any))
-        .toThrow(TypeError)
-      expect(() => createErrorResponseObj([] as any))
-        .toThrow(TypeError)
-      expect(() => createErrorResponseObj({} as any))
-        .toThrow(TypeError)
-      expect(() => createErrorResponseObj(true as any))
-        .toThrow(TypeError)
+    it('should log an error by the error logger when input is not a string', () => {
+      const mockFn = jest.fn()
+      console.error = mockFn
+
+      createErrorResponseObj(5 as any)
+      expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+      createErrorResponseObj(5.2 as any)
+      expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+      createErrorResponseObj([] as any)
+      expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+      createErrorResponseObj({} as any)
+      expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+      createErrorResponseObj(true as any)
+      expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
     })
 
     test('to return an error response object when the input is null', () => {
