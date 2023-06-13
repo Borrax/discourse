@@ -6,7 +6,13 @@ describe('Testing the server response methods', () => {
   describe('The error response obj creator', () => {
     const errorMsg = 'test error'
 
-    it('should log an error by the error logger when input is undefined', () => {
+    it('error message should be null when input message is undefined', () => {
+      const resp = createErrorResponseObj(undefined as any)
+      expect(isErrorResponseObj(resp)).toBe(true)
+      expect(resp.err).toBe(null)
+    })
+
+    it('should use the error logger when input is undefined', () => {
       const mockFn = jest.fn()
       console.error = mockFn
 

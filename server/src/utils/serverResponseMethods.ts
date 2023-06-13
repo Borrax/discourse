@@ -10,6 +10,7 @@ export const createErrorResponseObj = (msg: string | null): ErrorResponse => {
   if (typeof msg !== 'string' && msg !== null) {
     errorLogger(new TypeError('Wrong input of the error response creator\n' +
       'Expected string or null and got ' + typeof msg))
+    msg = null
   }
 
   return {
