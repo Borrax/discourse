@@ -184,7 +184,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
 
       test(`when username is below ${MIN_USERNAME_LEN} chars`, async () => {
         const invalidUser = {
-          passwrod: 'somePass',
+          password: 'somePass',
           username: 'so'
         }
 
@@ -203,7 +203,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
 
       test(`when username is above ${MAX_USERNAME_LEN} chars`, async () => {
         const invalidUser = {
-          passwrod: 'somePass',
+          password: 'somePass',
           username: 'someUsernameLongerThan20Chars'
         }
 
@@ -222,7 +222,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
 
       test('when username contains spaces', async () => {
         const invalidUser = {
-          passwrod: 'somePassword',
+          password: 'somePassword',
           username: 'some Username'
         }
 
@@ -241,7 +241,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
 
       test('when password is an empty str', async () => {
         const invalidUser = {
-          passwrod: '',
+          password: '',
           username: 'someUsername'
         }
 
@@ -260,7 +260,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
 
       test(`when password is below ${MIN_PASSWORD_LEN} chars`, async () => {
         const invalidUser = {
-          passwrod: 'someP',
+          password: 'someP',
           username: 'someUsername'
         }
 
@@ -279,7 +279,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
 
       test(`when password is longer than ${MAX_PASSWORD_LEN} chars`, async () => {
         const invalidUser = {
-          passwrod: 'somePasswordThatIsReallyReallyLong',
+          password: 'somePasswordThatIsReallyReallyLong',
           username: 'someUsername'
         }
 
@@ -298,7 +298,7 @@ describe('Testing the user registration API at ' + registerPath, () => {
 
       test('when password contains spaces', async () => {
         const invalidUser = {
-          passwrod: 'some Password',
+          password: 'some Password',
           username: 'someUsername'
         }
 
