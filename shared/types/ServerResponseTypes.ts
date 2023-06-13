@@ -1,5 +1,5 @@
 export type SuccessResponse<T> = {
-  load: T
+  load: T | null
 }
 
 export type ErrorResponse = {

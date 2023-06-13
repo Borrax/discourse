@@ -21,7 +21,7 @@ export const createErrorResponseObj = (msg: string | null): ErrorResponse => {
 * that will be sent to the client
 * @returns An success server response onject
 */
-export const createSuccessResponseObj = <T>(load: T): SuccessResponse<T> => {
+export const createSuccessResponseObj = <T>(load: T | null): SuccessResponse<T> => {
   return {
     load
   }
