@@ -1,14 +1,22 @@
 import type { UserRegData } from './types/UserSharedTypes'
 
-const USERNAME_REGEX = /^\S*$/
-const PASSWORD_REGEX = USERNAME_REGEX
+/**
+* @const An object containing regexes for validating the user string 
+* containing fields when registering
+*/
+export const regDataValidationRegex: {
+  [ket: string]: RegExp
+} = {
+  USERNAME_REGEX: /^\S*$/,
+  PASSWORD_REGEX: /^\S*$/
+} 
 
 /**
 * @const An object containing all the allowed limits for the username
 * and the password lengths of the registering user
 */
 export const allowedUserRegLengths: {
-  [key:string]: number
+  [key: string]: number
 } = {
   MIN_USERNAME_LEN: 3,
   MAX_USERNAME_LEN: 20,
@@ -18,6 +26,8 @@ export const allowedUserRegLengths: {
 
 const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = 
   allowedUserRegLengths
+
+const { USERNAME_REGEX, PASSWORD_REGEX } = regDataValidationRegex
 
 /**
 * @function Goes through the the fields of the user registration
