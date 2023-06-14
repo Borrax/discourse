@@ -3,13 +3,40 @@ import type { ServerResponse } from '../../../../shared/types/ServerResponseType
 import type { UserLoginLoad } from '../../types/UserSharedTypes'
 import { createErrorResponseObj, createSuccessResponseObj } from '../../utils/serverResponseMethods'
 import { findErrInLoginData } from '../../../../shared/loginDataValidator'
+import { User } from '../../models/user'
+import { errorLogger } from '../../utils/errorLogger'
+import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 
-export const login = (((req, res) => {
+export const login = ((async (req, res) => {
   let serverResponse: ServerResponse<UserLoginLoad> | null = null
 
   const errorMsg = findErrInLoginData(req.body)
   if (errorMsg !== null) {
     serverResponse = createErrorResponseObj(errorMsg)
+    res.status(400).json(serverResponse)
+    return
+  }
+
+  const { username } = req.body
+
+  const existingUser = await User.findOne({ username })
+    .catch(err => {
+      errorLogger(new Error(`Error trying to find an
+existing user on login attempt: `, err))
+      serverResponse = createErrorResponseObj('Something went wrong')
+    })
+
+  // if the server response is an error object here
+  // that means there was trouble trying to find the
+  // user in the db and it got assigned to it in the
+  // catch statement
+  if (isErrorResponseObj(serverResponse)) {
+    res.status(500).json(serverResponse)
+    return
+  }
+
+  if (existingUser === null) {
+    serverResponse = createErrorResponseObj('Wrong username or password')
     res.status(400).json(serverResponse)
     return
   }
