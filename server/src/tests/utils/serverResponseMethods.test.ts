@@ -2,6 +2,8 @@ import { describe, test, expect, it, jest } from '@jest/globals'
 import { createErrorResponseObj, createSuccessResponseObj } from '../../utils/serverResponseMethods'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 
+const originalConsoleError = console.error
+
 describe('Testing the server response methods', () => {
   describe('The error response obj creator', () => {
     const errorMsg = 'test error'
@@ -14,6 +16,8 @@ describe('Testing the server response methods', () => {
       const resp = createErrorResponseObj(undefined as any)
       expect(isErrorResponseObj(resp)).toBe(true)
       expect(resp.err).toBe(null)
+
+      console.error = originalConsoleError
     })
 
     it('should use the error logger when input is undefined', () => {
@@ -22,6 +26,8 @@ describe('Testing the server response methods', () => {
 
       createErrorResponseObj(undefined as any)
       expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+
+      console.error = originalConsoleError
     })
 
     it('should return null when non-string and non-null msg is provided', () => {
@@ -48,6 +54,8 @@ describe('Testing the server response methods', () => {
       resp = createErrorResponseObj(true as any)
       expect(isErrorResponseObj(resp)).toBe(true)
       expect(resp.err).toBe(null)
+
+      console.error = originalConsoleError
     })
 
     it('should log an error by the error logger when input is not a string', () => {
@@ -64,6 +72,8 @@ describe('Testing the server response methods', () => {
       expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
       createErrorResponseObj(true as any)
       expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+
+      console.error = originalConsoleError
     })
 
     test('to return an error response object when the input is null', () => {
@@ -115,9 +125,15 @@ describe('Testing the server response methods', () => {
     })
 
     it('should return a success objec\'s load to be null with undefined input', () => {
+      // disable the console error
+      const mockFn = jest.fn()
+      console.error = mockFn
+
       const resp = createSuccessResponseObj(undefined as any)
       expect(isSuccessResponseObj(resp)).toBe(true)
       expect(resp.load).toBe(null)
+
+      console.error = originalConsoleError
     })
 
     it('should use the error logger when an undefined load is passed', () => {
@@ -126,6 +142,8 @@ describe('Testing the server response methods', () => {
 
       createSuccessResponseObj(undefined as any)
       expect(mockFn.mock.calls[0][0]).toMatch(/error logger/i)
+
+      console.error = originalConsoleError
     })
   })
 })
