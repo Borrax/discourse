@@ -12,7 +12,7 @@ export const allowedUserRegLengths: {
 } = {
   MIN_USERNAME_LEN: 3,
   MAX_USERNAME_LEN: 20,
-  MIN_PASSWORD_LEN: 5,
+  MIN_PASSWORD_LEN: 6,
   MAX_PASSWORD_LEN: 30
 }
 
