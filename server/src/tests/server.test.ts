@@ -25,13 +25,15 @@ describe('Testing server\'s ability to handle json', () => {
     }`
 
     // surpressing the displaying of the console error for
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    const spy = jest.spyOn(console, 'error')
+      .mockImplementation(() => {})
 
     const resp = await request.post('/test/json')
       .send(badJsonStr)
       .set('content-type', 'application/json')
 
     expect(resp.status).toBe(400)
+    spy.mockRestore()
   })
 
   it('should display an error in the console when an invalid json is provided', async () => {
@@ -40,13 +42,15 @@ describe('Testing server\'s ability to handle json', () => {
       "subject": "bad json"
     }`
 
-    jest.spyOn(console, 'error').mockImplementation(() => {})
+    const spy = jest.spyOn(console, 'error')
+      .mockImplementation(() => {})
 
     await request.post('/test/json')
       .send(badJsonStr)
       .set('content-type', 'application/json')
 
     expect(console.error).toHaveBeenCalled()
+    spy.mockRestore()
   })
 
   it('should return the same json that it has received', async () => {
