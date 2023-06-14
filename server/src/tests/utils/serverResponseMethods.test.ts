@@ -1,4 +1,4 @@
-import { describe, test, expect, it, jest } from '@jest/globals'
+import { describe, expect, it, jest } from '@jest/globals'
 import { createErrorResponseObj, createSuccessResponseObj } from '../../utils/serverResponseMethods'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 
@@ -76,17 +76,17 @@ describe('Testing the server response methods', () => {
       console.error = originalConsoleError
     })
 
-    test('to return an error response object when the input is null', () => {
+    it('should return an error response object when the input is null', () => {
       const resp = createErrorResponseObj(null)
       expect(isErrorResponseObj(resp)).toBe(true)
     })
 
-    test('to return an error response obj when the string is empty', () => {
+    it('should return an error response obj when the string is empty', () => {
       const respObj = createErrorResponseObj('')
       expect(isErrorResponseObj(respObj)).toBe(true)
     })
 
-    test('to return error response obj when a non-empty string is passed', () => {
+    it('should return an error response obj when a non-empty string is passed', () => {
       const respObj = createErrorResponseObj(errorMsg)
       expect(isErrorResponseObj(respObj)).toBe(true)
     })
