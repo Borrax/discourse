@@ -6,8 +6,6 @@ import { app } from '../../server'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { isJWT } from '../../utils/jwtUtils'
 
-const request = supertest(app)
-
 const nonExistingUser: UserLoginData = {
   username: 'someUser',
   password: 'somePass'
@@ -19,6 +17,8 @@ const existingUser: UserLoginData = {
 }
 
 describe('Testing the user login at ' + apiPaths.user.login, () => {
+  const request = supertest(app)
+
   describe('When user doesn\'t exist', () => {
     it('should return status 400', async () => {
       const resp = await request.post(apiPaths.user.login)
@@ -43,73 +43,73 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
       expect(regex.test(resp.body.err)).toBe(true)
     })
   })
-})
 
-describe('When invalid input is provided', () => {
-  it('should return status 400', async () => {
-    const invalidReqPayload = {}
-    const resp = await request.post(apiPaths.user.login)
-      .send(invalidReqPayload)
-
-    expect(resp.status).toBe(400)
-  })
-
-  describe('should return error response', () => {
-    test('when no username is provided', async () => {
-      const invalidReqPayload = { password: 'somePass' }
+  describe('When invalid input is provided', () => {
+    it('should return status 400', async () => {
+      const invalidReqPayload = {}
       const resp = await request.post(apiPaths.user.login)
         .send(invalidReqPayload)
 
       expect(resp.status).toBe(400)
-      expect(isErrorResponseObj(resp.body)).toBe(true)
     })
 
-    test('when no password is provided', async () => {
-      const invalidReqPayload = { username: existingUser.username }
-      const resp = await request.post(apiPaths.user.login)
-        .send(invalidReqPayload)
+    describe('should return error response', () => {
+      test('when no username is provided', async () => {
+        const invalidReqPayload = { password: 'somePass' }
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
 
-      expect(resp.status).toBe(400)
-      expect(isErrorResponseObj(resp.body)).toBe(true)
-    })
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
 
-    test('when username is an empty string', async () => {
-      const invalidReqPayload = {
-        username: '',
-        password: existingUser.password
-      }
+      test('when no password is provided', async () => {
+        const invalidReqPayload = { username: existingUser.username }
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
 
-      const resp = await request.post(apiPaths.user.login)
-        .send(invalidReqPayload)
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
 
-      expect(resp.status).toBe(400)
-      expect(isErrorResponseObj(resp.body)).toBe(true)
-    })
+      test('when username is an empty string', async () => {
+        const invalidReqPayload = {
+          username: '',
+          password: existingUser.password
+        }
 
-    test('when the password is an empty string', async () => {
-      const invalidReqPayload = {
-        username: existingUser.username,
-        password: ''
-      }
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
 
-      const resp = await request.post(apiPaths.user.login)
-        .send(invalidReqPayload)
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
 
-      expect(resp.status).toBe(400)
-      expect(isErrorResponseObj(resp.body)).toBe(true)
-    })
+      test('when the password is an empty string', async () => {
+        const invalidReqPayload = {
+          username: existingUser.username,
+          password: ''
+        }
 
-    test('when wrong password is provided', async () => {
-      const invalidReqPayload = {
-        username: existingUser.username,
-        password: 'someRandomPassword'
-      }
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
 
-      const resp = await request.post(apiPaths.user.login)
-        .send(invalidReqPayload)
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
 
-      expect(resp.status).toBe(400)
-      expect(isErrorResponseObj(resp.body)).toBe(true)
+      test('when wrong password is provided', async () => {
+        const invalidReqPayload = {
+          username: existingUser.username,
+          password: 'someRandomPassword'
+        }
+
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
+
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
     })
   })
 
