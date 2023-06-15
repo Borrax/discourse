@@ -1,7 +1,7 @@
 import type { Document } from 'mongoose'
 import { Schema, model } from 'mongoose'
 
-type UserModel = Document & {
+export type UserModel = Document & {
   username: string
   password: string
   registeredAt: Date
