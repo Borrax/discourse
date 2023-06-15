@@ -4,7 +4,7 @@ import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { app } from '../../server'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
-import { isJWT } from '../../utils/isJWT'
+import { isJWT } from '../../utils/jwtUtils'
 
 const request = supertest(app)
 
