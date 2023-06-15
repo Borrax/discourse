@@ -1,4 +1,6 @@
 import type { UserLoginData } from '../../../../shared/types/UserSharedTypes'
+import type { Response } from 'supertest'
+
 import supertest from 'supertest'
 import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
@@ -14,6 +16,22 @@ const nonExistingUser: UserLoginData = {
 const existingUser: UserLoginData = {
   username: 'existing_username',
   password: 'some_password'
+}
+
+const extractCookieValue = (resp: Response, cookieName: string): string | null => {
+  const tokenRegex = new RegExp(`${cookieName}=(.*?);`)
+  let extractedValue = null
+
+  for (const c of resp.headers['set-cookie']) {
+    const matched = c.match(tokenRegex)
+
+    if (typeof matched[0] === 'string') {
+      extractedValue = matched[1]
+      break
+    }
+  }
+
+  return extractedValue
 }
 
 describe('Testing the user login at ' + apiPaths.user.login, () => {
@@ -134,6 +152,29 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
 
       expect(typeof resp.body.load.token).toBe('string')
       expect(isJWT(resp.body.load.token)).toBe(true)
+    })
+
+    it('should set a cookie', async () => {
+      const resp = await request.post(apiPaths.user.login)
+        .send(existingUser)
+
+      expect(resp.header['set-cookie']).toBeDefined()
+    })
+
+    it('should have a cookie called \'token\'', async () => {
+      const resp = await request.post(apiPaths.user.login)
+        .send(existingUser)
+
+      const cookieValue = extractCookieValue(resp, 'token')
+      expect(typeof cookieValue).toBe('string')
+    })
+
+    it('the value of the token cookie should be a JWT', async () => {
+      const resp = await request.post(apiPaths.user.login)
+        .send(existingUser)
+
+      const cookieValue = extractCookieValue(resp, 'token')
+      expect(isJWT(cookieValue)).toBe(true)
     })
   })
 })
