@@ -8,7 +8,8 @@ import { findErrInLoginData } from '../../../../shared/loginDataValidator'
 import { User } from '../../models/user'
 import { errorLogger } from '../../utils/errorLogger'
 import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
-// const JWT_KEY = 'this-is.averySecretKeyy'
+import { createJWT } from '../../utils/jwtUtils'
+const JWT_KEY = 'this-is.averySecretKeyy'
 
 export const login = ((async (req, res) => {
   let serverResponse: ServerResponse<UserLoginLoad> | null = null
@@ -51,9 +52,16 @@ existing user on login attempt: `, err))
     return
   }
 
+  const jwtPayload = {
+    id: existingUser._id
+  }
+  const token = createJWT(jwtPayload, JWT_KEY, '1h')
+
   serverResponse = createSuccessResponseObj({
-    token: ''
+    token
   })
 
-  res.json(serverResponse)
+  res.cookie('token', token, {
+    httpOnly: true
+  }).json(serverResponse)
 }) as RequestHandler)
