@@ -19,32 +19,33 @@ const existingUser: UserLoginData = {
 }
 
 describe('Testing the user login at ' + apiPaths.user.login, () => {
-  describe('Testing when user doesn\'t exist', () => {
-    it('should return status 400 when the user doesn\'t exist', async () => {
+  describe('When user doesn\'t exist', () => {
+    it('should return status 400', async () => {
       const resp = await request.post(apiPaths.user.login)
         .send(nonExistingUser)
 
       expect(resp.status).toBe(400)
     })
-  })
 
-  it('should return an error response object', async () => {
-    const resp = await request.post(apiPaths.user.login)
-      .send(nonExistingUser)
+    it('should return an error response object', async () => {
+      const resp = await request.post(apiPaths.user.login)
+        .send(nonExistingUser)
 
-    expect(isErrorResponseObj(resp.body)).toBe(true)
-  })
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
 
-  it('should contain the words \'exists\' or \'registered\' in the error' + 'message', async () => {
-    const regex = /(exists)|(registered)/ig
-    const resp = await request.post(apiPaths.user.login)
-      .send(nonExistingUser)
+    it(`should contain the words 'credentidals' or 
+  'password' and 'username' in the error message`, async () => {
+      const regex = /(credentials)|((?=.*\bpassword\b)(.*\busername\b).*)/ig
+      const resp = await request.post(apiPaths.user.login)
+        .send(nonExistingUser)
 
-    expect(regex.test(resp.body.err)).toBe(true)
+      expect(regex.test(resp.body.err)).toBe(true)
+    })
   })
 })
 
-describe('Testing when invalid input is provided', () => {
+describe('When invalid input is provided', () => {
   it('should return status 400', async () => {
     const invalidReqPayload = {}
     const resp = await request.post(apiPaths.user.login)
@@ -112,7 +113,7 @@ describe('Testing when invalid input is provided', () => {
     })
   })
 
-  describe('Testing when the correct login credentials are provided', () => {
+  describe('When the correct login credentials are provided', () => {
     it('should return status 200', async () => {
       const resp = await request.post(apiPaths.user.login)
         .send(existingUser)
@@ -131,8 +132,8 @@ describe('Testing when invalid input is provided', () => {
       const resp = await request.post(apiPaths.user.login)
         .send(existingUser)
 
-      expect(typeof resp.body.token).toBe('string')
-      expect(isJWT(resp.body.token)).toBe(true)
+      expect(typeof resp.body.load.token).toBe('string')
+      expect(isJWT(resp.body.load.token)).toBe(true)
     })
   })
 })
