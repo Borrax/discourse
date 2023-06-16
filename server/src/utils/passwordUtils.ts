@@ -22,6 +22,11 @@ const genHashedPass = async (plainPass: string, salt: string): Promise<string | 
   return hashedPassBuff.toString('hex')
 }
 
+/**
+* @function Generates a password hash string with salt appended to it
+* @param plainPass The clean password string
+* @returns the hashed pass with salt in the format (hashedPass):(salt)
+*/
 export const genHashedPassNSaltStr = async (plainPass: string): Promise<string | null> => {
   const salt = randomBytes(16).toString('hex')
   const hashedPass = await genHashedPass(plainPass, salt)
