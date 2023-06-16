@@ -7,6 +7,8 @@ import { apiPaths } from '../../../../shared/apiPaths'
 import { app } from '../../server'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { isJWT } from '../../utils/jwtUtils'
+import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userRegDataValidator'
+import { genRandomString } from '../testUtils'
 
 const nonExistingUser: UserLoginData = {
   username: 'someUser',
@@ -36,6 +38,12 @@ const extractCookieValue = (resp: Response, cookieName: string): string | null =
 
 describe('Testing the user login at ' + apiPaths.user.login, () => {
   const request = supertest(app)
+
+  const {
+    MIN_USERNAME_LEN, MAX_USERNAME_LEN
+  } = allowedUserRegLengths
+
+  const { USERNAME_REGEX } = regDataValidationRegex
 
   describe('When user doesn\'t exist', () => {
     it('should return status 400', async () => {
@@ -94,6 +102,35 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
         const invalidReqPayload = {
           username: '',
           password: existingUser.password
+        }
+
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
+
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test(`when username is shorter than ${MIN_USERNAME_LEN} chars`, async () => {
+        const invalidReqPayload = {
+          username: existingUser.username.substring(0, MIN_USERNAME_LEN),
+          password: 'someRandomPassword'
+        }
+
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
+
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test(`when username is longer than ${MAX_USERNAME_LEN} chars`, async () => {
+        const longUsername = existingUser.username +
+          genRandomString(MAX_USERNAME_LEN, USERNAME_REGEX)
+
+        const invalidReqPayload = {
+          username: longUsername,
+          password: 'someRandomPassword'
         }
 
         const resp = await request.post(apiPaths.user.login)
