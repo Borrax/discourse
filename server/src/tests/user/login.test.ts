@@ -40,10 +40,11 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
   const request = supertest(app)
 
   const {
-    MIN_USERNAME_LEN, MAX_USERNAME_LEN
+    MIN_USERNAME_LEN, MAX_USERNAME_LEN,
+    MIN_PASSWORD_LEN, MAX_PASSWORD_LEN
   } = allowedUserRegLengths
 
-  const { USERNAME_REGEX } = regDataValidationRegex
+  const { USERNAME_REGEX, PASSWORD_REGEX } = regDataValidationRegex
 
   describe('When user doesn\'t exist', () => {
     it('should return status 400', async () => {
@@ -144,6 +145,34 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
         const invalidReqPayload = {
           username: existingUser.username,
           password: ''
+        }
+
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
+
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test(`when password is shorter than ${MIN_PASSWORD_LEN} chars`, async () => {
+        const invalidReqPayload = {
+          username: existingUser.username,
+          password: existingUser.password.substring(0, MIN_PASSWORD_LEN)
+        }
+
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidReqPayload)
+
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test(`when password is longer than ${MAX_PASSWORD_LEN} chars`, async () => {
+        const longPass = existingUser.password + genRandomString(MAX_PASSWORD_LEN, PASSWORD_REGEX)
+
+        const invalidReqPayload = {
+          username: existingUser.username,
+          password: longPass
         }
 
         const resp = await request.post(apiPaths.user.login)
