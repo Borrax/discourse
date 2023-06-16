@@ -34,5 +34,3 @@ export const genRandomString = (len: number, testRegex: RegExp = /./): string =>
 
   return resultStr
 }
-
-console.log(genRandomString(10))

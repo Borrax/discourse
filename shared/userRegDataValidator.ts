@@ -7,8 +7,8 @@ import type { UserRegData } from './types/UserSharedTypes'
 export const regDataValidationRegex: {
   [ket: string]: RegExp
 } = {
-  USERNAME_REGEX: /^\S*$/,
-  PASSWORD_REGEX: /^\S*$/
+  USERNAME_REGEX: /^[\x21-\x7E]+$/,
+  PASSWORD_REGEX: /^[\x21-\x7E]+$/
 } 
 
 /**
