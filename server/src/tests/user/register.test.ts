@@ -1,25 +1,11 @@
-import type { UserRegData } from '../../../../shared/types/UserSharedTypes'
-import { describe, it, expect, test } from '@jest/globals'
 import supertest from 'supertest'
+import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { app } from '../../server'
 import { User } from '../../models/user'
 import { allowedUserRegLengths } from '../../../../shared/userRegDataValidator'
-
-const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = allowedUserRegLengths
-
-const registerPath = apiPaths.user.register
-
-const existingUser: UserRegData = {
-  username: 'existing_username',
-  password: 'some_password'
-}
-
-const validUser: UserRegData = {
-  username: 'testUsername',
-  password: 'testPassword'
-}
+import { getExistingUserRegData, getNonExistentUserLoginData } from '../testUtils/usersUtils'
 
 const removeUserFromDb = async (username: string): Promise<void> => {
   await User.deleteOne({ username }).catch(err => {
@@ -28,9 +14,16 @@ const removeUserFromDb = async (username: string): Promise<void> => {
   })
 }
 
-const request = supertest(app)
+describe('Testing the user registration API at ' + apiPaths.user.register, () => {
+  const request = supertest(app)
 
-describe('Testing the user registration API at ' + registerPath, () => {
+  const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = allowedUserRegLengths
+
+  const registerPath = apiPaths.user.register
+
+  const existingUser = getNonExistentUserLoginData()
+  const validUser = getExistingUserRegData()
+
   describe('Testing when a valid user is provided', () => {
     it('should return status 200', async () => {
       const resp = await request.post(registerPath).send(validUser)
