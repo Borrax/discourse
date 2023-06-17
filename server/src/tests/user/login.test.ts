@@ -8,7 +8,7 @@ import { app } from '../../server'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { isJWT } from '../../utils/jwtUtils'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userRegDataValidator'
-import { genRandomString } from '../testUtils'
+import { genRandomStrWBadChars, genRandomString } from '../testUtils'
 
 const nonExistingUser: UserLoginData = {
   username: 'someUser',
@@ -141,6 +141,21 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
+      test('when the username has forbidden chars', async () => {
+        const badUsername = genRandomStrWBadChars(10, PASSWORD_REGEX)
+
+        const invalidUser = {
+          username: badUsername,
+          password: existingUser.password
+        }
+
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidUser)
+
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
       test('when the password is an empty string', async () => {
         const invalidReqPayload = {
           username: existingUser.username,
@@ -177,6 +192,21 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
 
         const resp = await request.post(apiPaths.user.login)
           .send(invalidReqPayload)
+
+        expect(resp.status).toBe(400)
+        expect(isErrorResponseObj(resp.body)).toBe(true)
+      })
+
+      test('when the password has forbidden chars', async () => {
+        const badPass = genRandomStrWBadChars(10, PASSWORD_REGEX)
+
+        const invalidUser = {
+          username: existingUser.username,
+          password: badPass
+        }
+
+        const resp = await request.post(apiPaths.user.login)
+          .send(invalidUser)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
