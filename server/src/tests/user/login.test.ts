@@ -46,17 +46,19 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
 
   const { USERNAME_REGEX, PASSWORD_REGEX } = regDataValidationRegex
 
+  const loginRequest = async (payload: UserLoginData): Promise<Response> => {
+    return await request.post(apiPaths.user.login).send(payload)
+  }
+
   describe('When user doesn\'t exist', () => {
     it('should return status 400', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(nonExistingUser)
+      const resp = await loginRequest(nonExistingUser)
 
       expect(resp.status).toBe(400)
     })
 
     it('should return an error response object', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(nonExistingUser)
+      const resp = await loginRequest(nonExistingUser)
 
       expect(isErrorResponseObj(resp.body)).toBe(true)
     })
@@ -64,8 +66,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
     it(`should contain the words 'credentidals' or 
   'password' and 'username' in the error message`, async () => {
       const regex = /(credentials)|((?=.*\bpassword\b)(.*\busername\b).*)/ig
-      const resp = await request.post(apiPaths.user.login)
-        .send(nonExistingUser)
+      const resp = await loginRequest(nonExistingUser)
 
       expect(regex.test(resp.body.err)).toBe(true)
     })
@@ -74,8 +75,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
   describe('When invalid input is provided', () => {
     it('should return status 400', async () => {
       const invalidReqPayload = {}
-      const resp = await request.post(apiPaths.user.login)
-        .send(invalidReqPayload)
+      const resp = await loginRequest(invalidReqPayload as any)
 
       expect(resp.status).toBe(400)
     })
@@ -83,8 +83,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
     describe('should return error response', () => {
       test('when no username is provided', async () => {
         const invalidReqPayload = { password: 'somePass' }
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload as any)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -92,8 +91,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
 
       test('when no password is provided', async () => {
         const invalidReqPayload = { username: existingUser.username }
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload as any)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -105,8 +103,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: existingUser.password
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -118,8 +115,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: 'someRandomPassword'
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -134,8 +130,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: 'someRandomPassword'
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -149,8 +144,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: existingUser.password
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidUser)
+        const resp = await loginRequest(invalidUser)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -162,8 +156,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: ''
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -175,8 +168,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: existingUser.password.substring(0, MIN_PASSWORD_LEN)
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -190,8 +182,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: longPass
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -205,8 +196,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: badPass
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidUser)
+        const resp = await loginRequest(invalidUser)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -218,8 +208,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
           password: 'someRandomPassword'
         }
 
-        const resp = await request.post(apiPaths.user.login)
-          .send(invalidReqPayload)
+        const resp = await loginRequest(invalidReqPayload)
 
         expect(resp.status).toBe(400)
         expect(isErrorResponseObj(resp.body)).toBe(true)
@@ -229,45 +218,39 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
 
   describe('When the correct login credentials are provided', () => {
     it('should return status 200', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(existingUser)
+      const resp = await loginRequest(existingUser)
 
       expect(resp.status).toBe(200)
     })
 
     it('should return a success response object', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(existingUser)
+      const resp = await loginRequest(existingUser)
 
       expect(isSuccessResponseObj(resp.body)).toBe(true)
     })
 
     it('should contain a jwt', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(existingUser)
+      const resp = await loginRequest(existingUser)
 
       expect(typeof resp.body.load.token).toBe('string')
       expect(isJWT(resp.body.load.token)).toBe(true)
     })
 
     it('should set a cookie', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(existingUser)
+      const resp = await loginRequest(existingUser)
 
       expect(resp.header['set-cookie']).toBeDefined()
     })
 
     it('should have a cookie called \'token\'', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(existingUser)
+      const resp = await loginRequest(existingUser)
 
       const cookieValue = extractCookieValue(resp, 'token')
       expect(typeof cookieValue).toBe('string')
     })
 
     it('the value of the token cookie should be a JWT', async () => {
-      const resp = await request.post(apiPaths.user.login)
-        .send(existingUser)
+      const resp = await loginRequest(existingUser)
 
       const cookieValue = extractCookieValue(resp, 'token')
       expect(isJWT(cookieValue)).toBe(true)
