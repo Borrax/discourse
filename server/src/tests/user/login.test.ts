@@ -8,7 +8,7 @@ import { app } from '../../server'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { isJWT } from '../../utils/jwtUtils'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userRegDataValidator'
-import { genRandomStrWBadChars, genRandomString } from '../testUtils'
+import { genRandomStrWBadChars, genRandomString } from '../testUtils/randomStrings'
 
 const nonExistingUser: UserLoginData = {
   username: 'someUser',
@@ -50,7 +50,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
     return await request.post(apiPaths.user.login).send(payload)
   }
 
-  describe('When user doesn\'t exist', () => {
+  describe('When the user doesn\'t exist', () => {
     it('should return status 400', async () => {
       const resp = await loginRequest(nonExistingUser)
 
@@ -63,7 +63,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
       expect(isErrorResponseObj(resp.body)).toBe(true)
     })
 
-    it(`should contain the words 'credentidals' or 
+    it(`should contain the words 'credentials' or 
   'password' and 'username' in the error message`, async () => {
       const regex = /(credentials)|((?=.*\bpassword\b)(.*\busername\b).*)/ig
       const resp = await loginRequest(nonExistingUser)
@@ -80,7 +80,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
       expect(resp.status).toBe(400)
     })
 
-    describe('should return error response', () => {
+    describe('should return an error response', () => {
       test('when no username is provided', async () => {
         const invalidReqPayload = { password: 'somePass' }
         const resp = await loginRequest(invalidReqPayload as any)
