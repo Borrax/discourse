@@ -9,16 +9,11 @@ import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/ser
 import { isJWT } from '../../utils/jwtUtils'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userRegDataValidator'
 import { genRandomStrWBadChars, genRandomString } from '../testUtils/randomStrings'
+import { getExistingUser, getNonExistentUser } from '../testUtils/usersUtils'
 
-const nonExistingUser: UserLoginData = {
-  username: 'someUser',
-  password: 'somePass'
-}
+const nonExistingUser = getNonExistentUser()
 
-const existingUser: UserLoginData = {
-  username: 'existing_username',
-  password: 'some_password'
-}
+const existingUser = getExistingUser()
 
 const extractCookieValue = (resp: Response, cookieName: string): string | null => {
   const tokenRegex = new RegExp(`${cookieName}=(.*?);`)
