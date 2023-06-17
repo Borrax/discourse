@@ -9,11 +9,7 @@ import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/ser
 import { isJWT } from '../../utils/jwtUtils'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userRegDataValidator'
 import { genRandomStrWBadChars, genRandomString } from '../testUtils/randomStrings'
-import { getExistingUser, getNonExistentUser } from '../testUtils/usersUtils'
-
-const nonExistingUser = getNonExistentUser()
-
-const existingUser = getExistingUser()
+import { getExistingUserLoginData, getNonExistentUserLoginData } from '../testUtils/usersUtils'
 
 const extractCookieValue = (resp: Response, cookieName: string): string | null => {
   const tokenRegex = new RegExp(`${cookieName}=(.*?);`)
@@ -33,6 +29,9 @@ const extractCookieValue = (resp: Response, cookieName: string): string | null =
 
 describe('Testing the user login at ' + apiPaths.user.login, () => {
   const request = supertest(app)
+
+  const nonExistingUser = getNonExistentUserLoginData()
+  const existingUser = getExistingUserLoginData()
 
   const {
     MIN_USERNAME_LEN, MAX_USERNAME_LEN,
