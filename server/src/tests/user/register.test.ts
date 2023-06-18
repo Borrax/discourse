@@ -1,3 +1,6 @@
+import type { Response } from 'supertest'
+import type { UserRegData } from '../../types/UserSharedTypes'
+
 import supertest from 'supertest'
 import { describe, it, expect, test } from '@jest/globals'
 import { apiPaths } from '../../../../shared/apiPaths'
@@ -5,35 +8,40 @@ import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/ser
 import { app } from '../../server'
 import { User } from '../../models/user'
 import { allowedUserRegLengths } from '../../../../shared/userRegDataValidator'
-import { getExistingUserRegData, getNonExistentUserLoginData } from '../testUtils/usersUtils'
-
-const removeUserFromDb = async (username: string): Promise<void> => {
-  await User.deleteOne({ username }).catch(err => {
-    console.error('Error deleting the user while running the tests')
-    console.error(err)
-  })
-}
+import { getExistingUserRegData, getNonExistingUserRegData } from '../testUtils/usersUtils'
 
 describe('Testing the user registration API at ' + apiPaths.user.register, () => {
   const request = supertest(app)
 
   const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = allowedUserRegLengths
 
-  const registerPath = apiPaths.user.register
+  const existingUser = getExistingUserRegData()
+  const validUser = getNonExistingUserRegData()
 
-  const existingUser = getNonExistentUserLoginData()
-  const validUser = getExistingUserRegData()
+  const registerRequest = async (payload: UserRegData): Promise<Response> => {
+    return await request.post(apiPaths.user.register)
+      .send(payload).catch(err => {
+        throw new Error('Error trying to send register request to the server\n', err)
+      })
+  }
+
+  const removeUserFromDb = async (username: string): Promise<void> => {
+    await User.deleteOne({ username }).catch(err => {
+      console.error('Error deleting the user while running the tests')
+      console.error(err)
+    })
+  }
 
   describe('Testing when a valid user is provided', () => {
     it('should return status 200', async () => {
-      const resp = await request.post(registerPath).send(validUser)
+      const resp = await registerRequest(validUser)
 
       expect(resp.status).toBe(200)
       await removeUserFromDb(validUser.username)
     })
 
     it('should return a success server response object', async () => {
-      const resp = await request.post(registerPath).send(validUser)
+      const resp = await registerRequest(validUser)
 
       expect(resp.body).toBeDefined()
       expect(isSuccessResponseObj(resp.body))
@@ -43,7 +51,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
     })
 
     it('should be tecorded to the DB', async () => {
-      await request.post(registerPath).send(validUser)
+      await registerRequest(validUser)
 
       const user = await User.findOne({ username: validUser.username })
 
@@ -54,7 +62,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
     })
 
     it('the success server response\'s load should have the correct properties', async () => {
-      const resp = await request.post(registerPath).send(validUser)
+      const resp = await registerRequest(validUser)
 
       expect(resp.body).toBeDefined()
       expect(resp.body.load.username).toBeDefined()
@@ -64,7 +72,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
     })
 
     it('should have the correct success information', async () => {
-      const resp = await request.post(registerPath).send(validUser)
+      const resp = await registerRequest(validUser)
 
       expect(resp.body.load.username).toBe(validUser.username)
 
@@ -74,20 +82,17 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
 
   describe('Testing when user already exists', () => {
     it('should return a status 400', async () => {
-      const resp = await request.post(registerPath)
-        .send(existingUser)
+      const resp = await registerRequest(existingUser)
       expect(resp.status).toBe(400)
     })
 
     it('should return an error response object', async () => {
-      const resp = await request.post(registerPath)
-        .send(existingUser)
+      const resp = await registerRequest(existingUser)
       expect(isErrorResponseObj(resp.body)).toBe(true)
     })
 
     it('should contain an error message string', async () => {
-      const resp = await request.post(registerPath)
-        .send(existingUser)
+      const resp = await registerRequest(existingUser)
 
       expect(resp.body.err).toBeDefined()
       expect(typeof resp.body.err).toBe('string')
@@ -95,8 +100,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
     })
 
     it('should include words \'registered\' or \'exists\' in the error message string', async () => {
-      const resp = await request.post(registerPath)
-        .send(existingUser)
+      const resp = await registerRequest(existingUser)
       const regex = /(exists)|(registered)/g
 
       expect(regex.test(resp.body.err)).toBe(true)
@@ -106,8 +110,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
   describe('Testing invalid input data', () => {
     it('should return status 400', async () => {
       const invalidUser = { username: 'invalidUser' }
-      const resp = await request.post(registerPath)
-        .send(invalidUser)
+      const resp = await registerRequest(invalidUser as any)
 
       const userInDb = await User.findOne({
         username: invalidUser.username
@@ -121,8 +124,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
       test('when no username property', async () => {
         const invalidUser = { password: 'somePass' }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser as any)
 
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
@@ -132,8 +134,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
       test('when no password property', async () => {
         const invalidUser = { username: 'someUsername' }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser as any)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -148,8 +149,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
       test('when an empty object', async () => {
         const invalidUser = {}
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser as any)
 
         expect(resp.status).toBe(400)
         expect(resp.body).toBeDefined()
@@ -162,8 +162,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           password: 'somePass'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -181,8 +180,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           username: 'so'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -200,8 +198,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           username: 'someUsernameLongerThan20Chars'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -219,8 +216,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           username: 'some Username'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -238,8 +234,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           username: 'someUsername'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -257,8 +252,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           username: 'someUsername'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -276,8 +270,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           username: 'someUsername'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
@@ -295,8 +288,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
           username: 'someUsername'
         }
 
-        const resp = await request.post(registerPath)
-          .send(invalidUser)
+        const resp = await registerRequest(invalidUser)
 
         const userInDb = await User.findOne({
           username: invalidUser.username
