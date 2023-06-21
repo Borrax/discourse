@@ -1,6 +1,5 @@
 import type { UserLoginData } from './types/UserSharedTypes'
-import { allowedUserRegLengths, regDataValidationRegex } from './userRegDataValidator'
-
+import { allowedUserRegLengths, regDataValidationRegex } from './userConstraintsShared'
 
 const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = 
   allowedUserRegLengths

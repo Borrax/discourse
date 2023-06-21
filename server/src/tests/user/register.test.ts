@@ -7,7 +7,7 @@ import { apiPaths } from '../../../../shared/apiPaths'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { app } from '../../server'
 import { User } from '../../models/user'
-import { allowedUserRegLengths } from '../../../../shared/userRegDataValidator'
+import { allowedUserRegLengths } from '../../../../shared/userConstraintsShared'
 import { getExistingUserRegData, getNonExistingUserRegData } from '../testUtils/usersUtils'
 
 describe('Testing the user registration API at ' + apiPaths.user.register, () => {

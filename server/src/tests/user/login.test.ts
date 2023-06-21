@@ -7,7 +7,7 @@ import { apiPaths } from '../../../../shared/apiPaths'
 import { app } from '../../server'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { isJWT } from '../../utils/jwtUtils'
-import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userRegDataValidator'
+import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
 import { genRandomStrWBadChars, genRandomString } from '../testUtils/randomStrings'
 import { getExistingUserLoginData, getNonExistentUserLoginData } from '../testUtils/usersUtils'
 
