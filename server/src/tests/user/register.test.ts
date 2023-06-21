@@ -19,7 +19,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
     MIN_PASSWORD_LEN, MAX_PASSWORD_LEN
   } = allowedUserRegLengths
 
-  const { USERNAME_REGEX } = regDataValidationRegex
+  const { USERNAME_REGEX, PASSWORD_REGEX } = regDataValidationRegex
 
   const existingUser = getExistingUserRegData()
   const validUser = getNonExistingUserRegData()
@@ -256,8 +256,8 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
 
       test(`when password is below ${MIN_PASSWORD_LEN} chars`, async () => {
         const invalidUser = {
-          password: 'someP',
-          username: 'someUsername'
+          password: validUser.password.substring(0, MIN_PASSWORD_LEN - 1),
+          username: validUser.username
         }
 
         const resp = await registerRequest(invalidUser)
@@ -273,9 +273,11 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
       })
 
       test(`when password is longer than ${MAX_PASSWORD_LEN} chars`, async () => {
+        const longPassword = validUser.password + genRandomString(MAX_PASSWORD_LEN, PASSWORD_REGEX)
+
         const invalidUser = {
-          password: 'somePasswordThatIsReallyReallyLong',
-          username: 'someUsername'
+          password: longPassword,
+          username: validUser.username
         }
 
         const resp = await registerRequest(invalidUser)
