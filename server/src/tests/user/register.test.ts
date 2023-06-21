@@ -7,13 +7,19 @@ import { apiPaths } from '../../../../shared/apiPaths'
 import { isErrorResponseObj, isSuccessResponseObj } from '../../../../shared/serverResponseMethods'
 import { app } from '../../server'
 import { User } from '../../models/user'
-import { allowedUserRegLengths } from '../../../../shared/userConstraintsShared'
+import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
 import { getExistingUserRegData, getNonExistingUserRegData } from '../testUtils/usersUtils'
+import { genRandomString } from '../testUtils/randomStrings'
 
 describe('Testing the user registration API at ' + apiPaths.user.register, () => {
   const request = supertest(app)
 
-  const { MIN_USERNAME_LEN, MAX_USERNAME_LEN, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = allowedUserRegLengths
+  const {
+    MIN_USERNAME_LEN, MAX_USERNAME_LEN,
+    MIN_PASSWORD_LEN, MAX_PASSWORD_LEN
+  } = allowedUserRegLengths
+
+  const { USERNAME_REGEX } = regDataValidationRegex
 
   const existingUser = getExistingUserRegData()
   const validUser = getNonExistingUserRegData()
@@ -176,8 +182,8 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
 
       test(`when username is below ${MIN_USERNAME_LEN} chars`, async () => {
         const invalidUser = {
-          password: 'somePass',
-          username: 'so'
+          password: validUser.password,
+          username: validUser.username.substring(0, MIN_USERNAME_LEN)
         }
 
         const resp = await registerRequest(invalidUser)
@@ -193,9 +199,11 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
       })
 
       test(`when username is above ${MAX_USERNAME_LEN} chars`, async () => {
+        const longUsername = validUser.username + genRandomString(MAX_USERNAME_LEN, USERNAME_REGEX)
+
         const invalidUser = {
-          password: 'somePass',
-          username: 'someUsernameLongerThan20Chars'
+          password: validUser.password,
+          username: longUsername
         }
 
         const resp = await registerRequest(invalidUser)
