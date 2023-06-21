@@ -74,7 +74,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
       expect(resp.body.load.username).toBeDefined()
       expect(typeof resp.body.load.username).toBe('string')
 
-      await removeUserFromDb(validUser.username)
+      // await removeUserFromDb(validUser.username)
     })
 
     it('should have the correct success information', async () => {
@@ -292,10 +292,10 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
-      test('when password contains spaces', async () => {
+      test('when password contains forbidden chars', async () => {
         const invalidUser = {
-          password: 'some Password',
-          username: 'someUsername'
+          password: genRandomStrWBadChars(MAX_PASSWORD_LEN - 1, PASSWORD_REGEX),
+          username: validUser.username
         }
 
         const resp = await registerRequest(invalidUser)
