@@ -183,7 +183,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
       test(`when username is below ${MIN_USERNAME_LEN} chars`, async () => {
         const invalidUser = {
           password: validUser.password,
-          username: validUser.username.substring(0, MIN_USERNAME_LEN)
+          username: validUser.username.substring(0, MIN_USERNAME_LEN - 1)
         }
 
         const resp = await registerRequest(invalidUser)
