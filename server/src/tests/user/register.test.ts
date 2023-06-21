@@ -9,7 +9,7 @@ import { app } from '../../server'
 import { User } from '../../models/user'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
 import { getExistingUserRegData, getNonExistingUserRegData } from '../testUtils/usersUtils'
-import { genRandomString } from '../testUtils/randomStrings'
+import { genRandomStrWBadChars, genRandomString } from '../testUtils/randomStrings'
 
 describe('Testing the user registration API at ' + apiPaths.user.register, () => {
   const request = supertest(app)
@@ -218,10 +218,10 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
         expect(isErrorResponseObj(resp.body)).toBe(true)
       })
 
-      test('when username contains spaces', async () => {
+      test('when username contains forbidden chars', async () => {
         const invalidUser = {
-          password: 'somePassword',
-          username: 'some Username'
+          password: validUser.password,
+          username: genRandomStrWBadChars(MAX_USERNAME_LEN - 1, USERNAME_REGEX)
         }
 
         const resp = await registerRequest(invalidUser)
