@@ -1,7 +1,12 @@
 export const RegisterForm = () => {
   return (
-  <form>
-      Hello there
+  <form className="register-form">
+      <div className="field-container">
+        <input type="text" />
+      </div>
+      <div className="field-container">
+        <input type="password" />
+      </div>
   </form>
   )
 }
