@@ -6,7 +6,7 @@
 export default {
   testRegex: [
     'server\\.test\\.js',
-    'errorHandlerMiddle\\.test\\.js'
+    'jsonMiddle\\.test\\.js'
   ],
   rootDir: './dist/server/src/tests/',
   verbose: true,
