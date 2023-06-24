@@ -4,7 +4,7 @@
  */
 
 export default {
-  testRegex: 'passwordUtils\\.test\\.js',
+  testRegex: 'server\\.test\\.js',
   rootDir: './dist/server/src/tests/',
   verbose: true,
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
