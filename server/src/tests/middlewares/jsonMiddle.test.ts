@@ -1,6 +1,6 @@
 
-import { describe, it, expect } from '@jest/globals'
 import supertest from 'supertest'
+import { describe, it, expect } from '@jest/globals'
 import { app } from '../../server'
 
 describe('Testing the json handling middleware', () => {
@@ -11,16 +11,14 @@ describe('Testing the json handling middleware', () => {
       test: 'test',
       arr: ['item1', 2],
       empty: '',
-      num: 4
+      num: 4,
+      isTrue: true
     }
 
     const resp = await request.post('/test/json')
       .send(testObj)
-      .set('content-type', 'application/json')
-      .set('Accept', 'application/json')
 
-    const contentType = resp.headers['content-type']
-    expect(contentType).toContain('application/json')
+    expect(resp.type).toBe('application/json')
     expect(resp.body).toEqual(testObj)
   })
 })
