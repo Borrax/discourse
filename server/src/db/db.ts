@@ -31,7 +31,7 @@ export const initializeDb = (successCb: CallbackFunType = () => {}): void => {
     console.error(err)
   })
 
-  if (process.env.NODE_ENV === 'test') {
+  if (process.env.NODE_ENV === 'production') {
     connectToDb(dbUrl, successCb)
   } else {
     connectToDb(dbTestDevUrl, successCb)
