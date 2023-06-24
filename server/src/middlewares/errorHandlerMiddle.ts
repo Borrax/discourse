@@ -1,13 +1,11 @@
-import type { Application, NextFunction,
-  Request, Response } from 'express'
-import { json } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 
-const errorHandler = (
+export const errorHandlerMiddle = (
   err: any,
   _req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   console.error(err)
 
   if (err.status === 400) {
@@ -19,11 +17,5 @@ const errorHandler = (
     res.status(500).json({ error: 'Internal server error'})
     return
   }
-
   next()
-}
-
-export const initializeMiddlewares = (app: Application) => {
-  app.use(json())
-  app.use(errorHandler)
 }
