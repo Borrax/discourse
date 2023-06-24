@@ -1,4 +1,5 @@
 import type { Application } from 'express'
+
 import { createSuccessResponseObj } from '../utils/serverResponseMethods'
 
 /**

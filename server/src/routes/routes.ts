@@ -1,4 +1,5 @@
 import type { Application } from 'express'
+
 import express from 'express'
 import path from 'path'
 import { attachUserRoutes } from './userRoutes'
