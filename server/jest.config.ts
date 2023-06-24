@@ -4,7 +4,10 @@
  */
 
 export default {
-  testRegex: 'server\\.test\\.js',
+  testRegex: [
+    'server\\.test\\.js',
+    'errorHandlerMiddle\\.test\\.js'
+  ],
   rootDir: './dist/server/src/tests/',
   verbose: true,
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
