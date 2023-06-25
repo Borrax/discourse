@@ -4,10 +4,10 @@
  */
 
 export default {
-  testRegex: [
-    'server\\.test\\.js',
-    'jsonMiddle\\.test\\.js'
-  ],
+  // testRegex: [
+  //   'server\\.test\\.js',
+  //   'passwordUtils\\.test\\.js'
+  // ],
   rootDir: './dist/server/src/tests/',
   verbose: true,
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
