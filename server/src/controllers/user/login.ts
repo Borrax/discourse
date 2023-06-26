@@ -9,6 +9,7 @@ import { errorLogger } from '../../utils/errorLogger'
 import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 import { createJWT } from '../../utils/jwtUtils'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
+import { comparePasswords } from '../../utils/passwordUtils'
 
 const JWT_KEY = 'this-is.averySecretKeyy'
 
@@ -95,8 +96,15 @@ existing user on login attempt: `, err))
     return
   }
 
-  const password = req.body.password
-  if (existingUser.password !== password) {
+  const providedPassword = req.body.password
+  const arePasswordsEqual = await comparePasswords(providedPassword, existingUser.password)
+
+  if (arePasswordsEqual === null) {
+    res.status(500).json(createErrorResponseObj('Something went wrong on the server'))
+    return
+  }
+
+  if (!arePasswordsEqual) {
     serverResponse = createErrorResponseObj('Incorrect username or password')
     res.status(400).json(serverResponse)
     return

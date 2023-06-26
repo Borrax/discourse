@@ -1,4 +1,3 @@
-
 import type { RequestHandler } from 'express'
 import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../../shared/types/UserSharedTypes'
 
@@ -6,6 +5,7 @@ import { User } from '../../models/user'
 import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 import { createErrorResponseObj, createSuccessResponseObj } from '../../utils/serverResponseMethods'
 import { regDataValidationRegex, allowedUserRegLengths } from '../../../../shared/userConstraintsShared'
+import { genHashedPassNSaltStr } from '../../utils/passwordUtils'
 
 const {
   MIN_USERNAME_LEN, MAX_USERNAME_LEN,
@@ -89,9 +89,11 @@ export const register = ((async (req, res) => {
     return
   }
 
+  const hashedPassWSalt = await genHashedPassNSaltStr(password)
+
   const userDataToSave = {
     username,
-    password
+    password: hashedPassWSalt
   }
 
   const newUser = new User(userDataToSave)
