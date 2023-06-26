@@ -2,7 +2,7 @@
   "name": "server",
   "scripts": {
     "build": "tsc",
-    "start": "set \"NODE_ENV=production\" && node dist/server/src/start.js",
+    "start": "node dist/server/src/start.js",
     "dev": "set \"NODE_ENV=development\" && nodemon --exec \"npm run build && npm start\"",
     "test": "set \"NODE_ENV=test\" && npm run build && jest --detectOpenHandles",
     "test:watch": "nodemon --exec \"npm test\""
