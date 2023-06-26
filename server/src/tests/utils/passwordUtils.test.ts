@@ -1,9 +1,14 @@
 import { describe, it, expect } from '@jest/globals'
-import { genHashedPassNSaltStr } from '../../utils/passwordUtils'
+import { comparePasswords, genHashedPassNSaltStr } from '../../utils/passwordUtils'
 import { getExistingUserRegData } from '../testUtils/usersUtils'
+import { genRandomString } from '../testUtils/randomStrings'
+import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
+import { genRandomNum } from '../testUtils/randomNumber'
 
 describe('Testing the password utils', () => {
   const existingUser = getExistingUserRegData()
+  const { MIN_PASSWORD_LEN, MAX_PASSWORD_LEN } = allowedUserRegLengths
+  const { PASSWORD_REGEX } = regDataValidationRegex
 
   describe('Testing the hash and salt string creator', () => {
     it('should return a string in the format {hashPass}:{salt}', async () => {
@@ -32,6 +37,21 @@ describe('Testing the password utils', () => {
 
       const salt = resultStr?.split(':')[1]
       expect(salt.length).toBe(32)
+    })
+  })
+
+  describe('Testing the plain text and hashed salted password comparer', () => {
+    it('should return true when the plain password is a precursor', async () => {
+      const passLen = genRandomNum(MIN_PASSWORD_LEN, MAX_PASSWORD_LEN)
+      const plainPass = genRandomString(passLen, PASSWORD_REGEX)
+
+      const hashedWSalt = await genHashedPassNSaltStr(plainPass)
+      if (hashedWSalt === null) {
+        throw new Error('Hashed pass with salt string generator threw an error in the test')
+      }
+
+      const areEqual = await comparePasswords(plainPass, hashedWSalt)
+      expect(areEqual).toBe(true)
     })
   })
 })
