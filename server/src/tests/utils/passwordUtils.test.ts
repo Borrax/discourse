@@ -3,7 +3,7 @@ import { comparePasswords, genHashedPassNSaltStr } from '../../utils/passwordUti
 import { getExistingUserRegData } from '../testUtils/usersUtils'
 import { genRandomString } from '../testUtils/randomStrings'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
-import { genRandomNum } from '../testUtils/randomNumber'
+import { genRandomInt } from '../testUtils/randomNumber'
 
 describe('Testing the password utils', () => {
   const existingUser = getExistingUserRegData()
@@ -42,7 +42,7 @@ describe('Testing the password utils', () => {
 
   describe('Testing the plain text and hashed salted password comparer', () => {
     it('should return true when the plain password is a precursor', async () => {
-      const passLen = genRandomNum(MIN_PASSWORD_LEN, MAX_PASSWORD_LEN)
+      const passLen = genRandomInt(MIN_PASSWORD_LEN, MAX_PASSWORD_LEN)
       const plainPass = genRandomString(passLen, PASSWORD_REGEX)
 
       const hashedWSalt = await genHashedPassNSaltStr(plainPass)
@@ -52,6 +52,21 @@ describe('Testing the password utils', () => {
 
       const areEqual = await comparePasswords(plainPass, hashedWSalt)
       expect(areEqual).toBe(true)
+    })
+
+    it('should return false when the plain password is not a precursor', async () => {
+      const passLen = genRandomInt(MIN_PASSWORD_LEN, MAX_PASSWORD_LEN)
+      const plainPass = genRandomString(passLen, PASSWORD_REGEX)
+
+      const hashedWSalt = await genHashedPassNSaltStr(plainPass)
+      if (hashedWSalt === null) {
+        throw new Error('Hashed pass with salt string generator threw an error in the test')
+      }
+
+      const differentPlainPass = genRandomString(passLen, PASSWORD_REGEX)
+
+      const areEqual = await comparePasswords(differentPlainPass, hashedWSalt)
+      expect(areEqual).toBe(false)
     })
   })
 })

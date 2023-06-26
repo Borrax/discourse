@@ -1,3 +1,8 @@
+/**
+* @function A function that generates a random number withing a given
+* range
+* @returns A floating point random number
+*/
 export const genRandomNum = (lower: number, upper: number): number => {
   if (typeof lower !== 'number' || typeof upper !== 'number') {
     throw new TypeError('One of the arguments is not a number')
@@ -8,4 +13,8 @@ export const genRandomNum = (lower: number, upper: number): number => {
   }
 
   return lower + Math.random() * (upper - lower)
+}
+
+export const genRandomInt = (lower: number, upper: number): number => {
+  return Math.round(genRandomNum(lower, upper))
 }
