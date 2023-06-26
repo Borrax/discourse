@@ -10,8 +10,7 @@ import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 import { createJWT } from '../../utils/jwtUtils'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
 import { comparePasswords } from '../../utils/passwordUtils'
-
-const JWT_KEY = 'this-is.averySecretKeyy'
+import { JWTConfig } from '../../configs/jstConfig'
 
 const {
   MIN_USERNAME_LEN, MAX_USERNAME_LEN,
@@ -19,6 +18,8 @@ const {
 } = allowedUserRegLengths
 
 const { USERNAME_REGEX, PASSWORD_REGEX } = regDataValidationRegex
+
+const { JWT_KEY, JWT_COOKIE_NAME } = JWTConfig
 
 /**
 * @function Goes through the the fields of the user registration
@@ -119,7 +120,7 @@ existing user on login attempt: `, err))
     token
   })
 
-  res.cookie('token', token, {
+  res.cookie(JWT_COOKIE_NAME, token, {
     httpOnly: true
   }).json(serverResponse)
 }) as RequestHandler)
