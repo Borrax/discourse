@@ -40,10 +40,11 @@ export const genHashedPassNSaltStr = async (plainPass: string): Promise<string |
 
 /**
 * @function A function that compares a plain text password and a password
-* that is of a user from the database.
+* that is of a user from the database. Error occurences are processed
+* true the error logger.
 * @param plainPass - The password string in plain text
 * @param dbUserPass - The password string taken straight from the db
-* @returns a promise that resolves to boolean or null if it encountered
+* @returns a promise that resolves to boolean or null if it has encountered
 * an error
 */
 export const comparePasswords = async (plainPass: string, dbUserPass: string): Promise<boolean | null> => {
@@ -56,7 +57,7 @@ export const comparePasswords = async (plainPass: string, dbUserPass: string): P
   }
 
   const truePass = splitDbPass[0]
-  const potentialTruePass = await genHashedPass(plainPass, splitDbPass[0])
+  const potentialTruePass = await genHashedPass(plainPass, splitDbPass[1])
 
   return truePass === potentialTruePass
 }
