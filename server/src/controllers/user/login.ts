@@ -10,7 +10,7 @@ import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 import { createJWT } from '../../utils/jwtUtils'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../../shared/userConstraintsShared'
 import { comparePasswords } from '../../utils/passwordUtils'
-import { JWTConfig } from '../../configs/jstConfig'
+import { JWTConfig } from '../../configs/jwtConfig'
 
 const {
   MIN_USERNAME_LEN, MAX_USERNAME_LEN,

@@ -1,6 +1,7 @@
 import type { Application } from 'express'
 
 import { createSuccessResponseObj } from '../utils/serverResponseMethods'
+import { authenticateUserMiddle } from '../middlewares/authenticateUserMiddle'
 
 /**
 * @function Attaches all the routes that are meant for testing
@@ -13,7 +14,7 @@ export const attachTestRoutes = (app: Application): void => {
     res.json(req.body)
   })
 
-  app.post(baseUrl + '/protected', (_req, res) => {
-    res.json(createSuccessResponseObj({ msg: 'this is the protected route' }))
+  app.get(baseUrl + '/protected', authenticateUserMiddle, (_req, res) => {
+    res.json(createSuccessResponseObj({ msg: 'The protected route reached' }))
   })
 }
