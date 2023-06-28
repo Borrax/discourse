@@ -15,6 +15,10 @@ export const attachTestRoutes = (app: Application): void => {
   })
 
   app.get(baseUrl + '/protected', authenticateUserMiddle, (_req, res) => {
-    res.json(createSuccessResponseObj({ msg: 'The protected route reached' }))
+    res.json(createSuccessResponseObj({ msg: 'Reached the protected endpoint' }))
+  })
+
+  app.get(baseUrl + '/cookieParser', (req, res) => {
+    res.json(createSuccessResponseObj({ cookies: req.cookies }))
   })
 }
