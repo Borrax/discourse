@@ -4,7 +4,7 @@ import { app } from '../../server'
 import { genRandomString } from '../testUtils/randomStrings'
 import { genRandomInt } from '../testUtils/randomNumber'
 
-type Cookie = {
+interface Cookie {
   name: string
   value: string
 }
@@ -12,17 +12,17 @@ type Cookie = {
 describe('Testing the cookie parser middleware', () => {
   const testRoute = '/test/cookieParser'
   const cookieAllowedChars = {
-    name: /^[^\x00-\0x1F\s?={}()\[\]<>,:;\\\/"@\x7F]+$/,
-    value: /^[^\x00-\0x1F\s=,:;\\\/"\x7F]+$/
+    name: /^[^\x00-\0x1F\s?={}()[\]<>,:;\\/"@\x7F]+$/,
+    value: /^[^\x00-\0x1F\s=,:;\\/"\x7F]+$/
   }
 
-  const request = async (cookies: Cookie[]) => {
+  const request = async (cookies: Cookie[]): Promise<supertest.Test> => {
     let cookieHeaderVal = ''
     for (let i = 0; i < cookies.length - 1; i++) {
       const c = cookies[i]
       cookieHeaderVal += `${c.name}=${c.value}; `
     }
-    
+
     const lastCookie = cookies[cookies.length - 1]
     cookieHeaderVal += `${lastCookie.name}=${lastCookie.value}`
 
