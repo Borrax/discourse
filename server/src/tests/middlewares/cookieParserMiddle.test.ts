@@ -3,6 +3,7 @@ import { describe, it, expect } from '@jest/globals'
 import { app } from '../../server'
 import { genRandomString } from '../testUtils/randomStrings'
 import { genRandomInt } from '../testUtils/randomNumber'
+import { cookieConfig } from '../../configs/cookieConfig'
 
 interface Cookie {
   name: string
@@ -11,10 +12,7 @@ interface Cookie {
 
 describe('Testing the cookie parser middleware', () => {
   const testRoute = '/test/cookieParser'
-  const cookieAllowedChars = {
-    name: /^[^\x00-\0x1F\s?={}()[\]<>,:;\\/"@\x7F]+$/,
-    value: /^[^\x00-\0x1F\s=,:;\\/"\x7F]+$/
-  }
+  const cookieAllowedChars = cookieConfig.allowedChars
 
   const request = async (cookies: Cookie[]): Promise<supertest.Test> => {
     let cookieHeaderVal = ''
