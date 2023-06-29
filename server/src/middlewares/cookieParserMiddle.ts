@@ -5,19 +5,21 @@ import type { ExpressMiddleware } from './middlewareTypes'
 * @param cookie - A string containing the name and the value seperated
 * by "=" as the http convention requires
 * @returns An object containing the trimmed name and value. If the value
-* is null the cookie string is not in the right format
+* is an empty string that means the cookie is not in the right format
 */
 const getCookieNameNVal = (cookie: string): {
-  name: string
-  value: string | null
+  name: string | ''
+  value: string | ''
 } => {
   let name = ''
-  let value = null
+  let value = ''
 
   for (let i = 0; i < cookie.length; i++) {
     const currChar = cookie[i]
 
     if (currChar === '=') {
+      // it is fine because it will return a '' if the
+      // the index is bigger than the string's length
       value = cookie.substring(i + 1).trim()
       break
     }
@@ -44,7 +46,7 @@ export const cookieParserMiddle: ExpressMiddleware = (req, _res, next) => {
     for (const cStr of cookieStrings) {
       const { name, value } = getCookieNameNVal(cStr)
 
-      if (value === null) {
+      if (value === '') {
         continue
       }
 
