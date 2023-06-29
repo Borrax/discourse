@@ -1,3 +1,4 @@
+import { cookieConfig } from '../configs/cookieConfig'
 import type { ExpressMiddleware } from './middlewareTypes'
 
 /**
@@ -11,6 +12,7 @@ const getCookieNameNVal = (cookie: string): {
   name: string | ''
   value: string | ''
 } => {
+  const allowedChars = cookieConfig.allowedChars
   let name = ''
   let value = ''
 
@@ -27,8 +29,18 @@ const getCookieNameNVal = (cookie: string): {
     name += currChar
   }
 
+  name = name.trim()
+
+  if (!allowedChars.name.test(name) ||
+    !allowedChars.value.test(value)) {
+    return {
+      name: '',
+      value: ''
+    }
+  }
+
   return {
-    name: name.trim(),
+    name,
     value
   }
 }

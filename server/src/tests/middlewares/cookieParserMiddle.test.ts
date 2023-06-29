@@ -1,3 +1,5 @@
+import type { Response } from 'supertest'
+
 import supertest from 'supertest'
 import { describe, it, expect } from '@jest/globals'
 import { app } from '../../server'
@@ -14,7 +16,7 @@ describe('Testing the cookie parser middleware', () => {
   const testRoute = '/test/cookieParser'
   const cookieAllowedChars = cookieConfig.allowedChars
 
-  const request = async (cookies: Cookie[]): Promise<supertest.Test> => {
+  const request = async (cookies: Cookie[]): Promise<Response> => {
     let cookieHeaderVal = ''
     for (let i = 0; i < cookies.length - 1; i++) {
       const c = cookies[i]
@@ -31,7 +33,7 @@ describe('Testing the cookie parser middleware', () => {
   it('should process the one cookie passed', async () => {
     const cookie: Cookie = {
       name: 'cookie1',
-      value: 'cookie_value_'
+      value: 'cookieValue1231231'
     }
 
     const resp = await request([cookie])
