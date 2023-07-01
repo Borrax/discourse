@@ -5,7 +5,7 @@
 
 export default {
   testRegex: [
-    'cookieParserMiddle\\.test\\.js'
+    'stringUtils\\.test\\.js'
   ],
   rootDir: './dist/server/src/tests/',
   verbose: true,
