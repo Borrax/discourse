@@ -1,4 +1,5 @@
 import { cookieConfig } from '../configs/cookieConfig'
+import { getNumOfBytesUTF8 } from '../utils/stringUtils'
 import type { ExpressMiddleware } from './middlewareTypes'
 
 /**
@@ -50,7 +51,8 @@ const getCookieNameNVal = (cookie: string): {
 * adds them to the request object as req.cookies.
 */
 export const cookieParserMiddle: ExpressMiddleware = (req, _res, next) => {
-  if (req.headers.cookie != null) {
+  if (req.headers.cookie != null &&
+    getNumOfBytesUTF8(req.headers.cookie) <= 4096) {
     const cookieStrings = req.headers.cookie.split(';')
 
     req.cookies = {}
