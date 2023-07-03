@@ -1,6 +1,8 @@
+import type { ExpressMiddleware } from './middlewareTypes'
+
 import { cookieConfig } from '../configs/cookieConfig'
 import { getNumOfBytesUTF8 } from '../utils/stringUtils'
-import type { ExpressMiddleware } from './middlewareTypes'
+import { createErrorResponseObj } from '../utils/serverResponseMethods'
 
 /**
 * @function Obtains the cookie name and value from a provided string
@@ -50,9 +52,13 @@ const getCookieNameNVal = (cookie: string): {
 * @function A middleware that parses the cookies in the incoming http request and
 * adds them to the request object as req.cookies.
 */
-export const cookieParserMiddle: ExpressMiddleware = (req, _res, next) => {
-  if (req.headers.cookie != null &&
-    getNumOfBytesUTF8(req.headers.cookie) <= 4096) {
+export const cookieParserMiddle: ExpressMiddleware = (req, res, next) => {
+  if (req.headers.cookie != null) {
+    if (getNumOfBytesUTF8(req.headers.cookie) > 4096) {
+      res.status(400).json(createErrorResponseObj('Request\'s headers are too big'))
+      return
+    }
+
     const cookieStrings = req.headers.cookie.split(';')
 
     req.cookies = {}

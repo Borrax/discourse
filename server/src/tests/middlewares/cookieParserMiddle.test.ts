@@ -6,6 +6,7 @@ import { app } from '../../server'
 import { genRandomString } from '../testUtils/randomStrings'
 import { genRandomInt } from '../testUtils/randomNumber'
 import { cookieConfig } from '../../configs/cookieConfig'
+import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
 
 interface Cookie {
   name: string
@@ -70,4 +71,18 @@ describe('Testing the cookie parser middleware', () => {
       expect(respCookies[currCookie.name]).toBe(currCookie.value)
     }
   })
+
+  it('should return an error message when the cookie header is too big',
+    async () => {
+      const veryLongString = genRandomString(4097)
+
+      const cookie: Cookie = {
+        name: 'testCookie',
+        value: veryLongString
+      }
+      const resp = await request([cookie])
+
+      expect(resp.status).toBe(400)
+      expect(isErrorResponseObj(resp.body)).toBe(true)
+    })
 })
