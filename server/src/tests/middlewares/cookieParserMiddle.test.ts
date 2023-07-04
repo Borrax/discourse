@@ -74,7 +74,7 @@ describe('Testing the cookie parser middleware', () => {
 
   it('should return an error message when the cookie header is too big',
     async () => {
-      const veryLongString = genRandomString(4097)
+      const veryLongString = genRandomString(cookieConfig.cookieHeaderSize + 1)
 
       const cookie: Cookie = {
         name: 'testCookie',
