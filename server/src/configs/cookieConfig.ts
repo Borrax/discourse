@@ -5,5 +5,5 @@ export const cookieConfig = Object.freeze({
     // eslint-disable-next-line no-control-regex
     value: /^[^\x00-\x1F\x7F\s=,:;\\/"]+$/
   },
-  cookieHeaderSize: 4096
+  maxHeaderSize: 4096
 })

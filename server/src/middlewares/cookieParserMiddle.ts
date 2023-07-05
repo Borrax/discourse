@@ -54,7 +54,7 @@ const getCookieNameNVal = (cookie: string): {
 */
 export const cookieParserMiddle: ExpressMiddleware = (req, res, next) => {
   if (req.headers.cookie != null) {
-    if (getNumOfBytesUTF8(req.headers.cookie) > cookieConfig.cookieHeaderSize) {
+    if (getNumOfBytesUTF8(req.headers.cookie) > cookieConfig.maxHeaderSize) {
       res.status(400).json(createErrorResponseObj('Request\'s headers are too big'))
       return
     }
