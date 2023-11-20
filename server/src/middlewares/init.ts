@@ -11,7 +11,7 @@ import { cookieParserMiddle } from './cookieParserMiddle'
 export const initGeneralMiddlewares = (app: Application): void => {
   const jsonMiddle = json()
 
-  app.use(errorHandlerMiddle)
   app.use(jsonMiddle)
   app.use(cookieParserMiddle)
+  app.use(errorHandlerMiddle)
 }

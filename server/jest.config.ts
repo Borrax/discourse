@@ -4,9 +4,9 @@
  */
 
 export default {
-  testRegex: [
-    'cookieParserMiddle\\.test\\.js'
-  ],
+  // testRegex: [
+  //   'cookieParserMiddle\\.test\\.js'
+  // ],
   rootDir: './dist/server/src/tests/',
   verbose: true,
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],

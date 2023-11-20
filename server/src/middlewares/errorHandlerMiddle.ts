@@ -6,7 +6,7 @@ export const errorHandlerMiddle = (
   res: Response,
   next: NextFunction
 ): void => {
-  console.error(err)
+  console.error("Error handler middleware:\n" + err)
 
   if (err.status === 400) {
     res.status(400).json({ error: 'Invalid data format sent to the server' })
