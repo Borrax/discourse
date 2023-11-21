@@ -1,4 +1,4 @@
-import type { UserLoginData } from '../../../../shared/types/UserSharedTypes'
+import type { UserLoginEntry } from '../../../../shared/types/UserSharedTypes'
 import type { Response } from 'supertest'
 
 import supertest from 'supertest'
@@ -40,7 +40,7 @@ describe('Testing the user login at ' + apiPaths.user.login, () => {
 
   const { USERNAME_REGEX, PASSWORD_REGEX } = regDataValidationRegex
 
-  const loginRequest = async (payload: UserLoginData): Promise<Response> => {
+  const loginRequest = async (payload: UserLoginEntry): Promise<Response> => {
     return await request.post(apiPaths.user.login).send(payload)
   }
 

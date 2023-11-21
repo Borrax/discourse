@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express'
-import type { UserRegData, UserRegResponse, UserRegResponseLoad } from '../../../../shared/types/UserSharedTypes'
+import type { UserRegEntry, UserRegResponse, UserRegResponseLoad } from '../../../../shared/types/UserSharedTypes'
 
 import { User } from '../../models/user'
 import { isErrorResponseObj } from '../../../../shared/serverResponseMethods'
@@ -20,7 +20,7 @@ const { USERNAME_REGEX, PASSWORD_REGEX } = regDataValidationRegex
 * @return A string with the error message if it finds
 * anything or null if it doesn't
 */
-const findErrInRegData = (regData: UserRegData | null): string | null => {
+const findErrInRegData = (regData: UserRegEntry | null): string | null => {
   if (regData === null || typeof regData !== 'object') {
     return 'No registration data provided'
   }
@@ -57,7 +57,7 @@ const findErrInRegData = (regData: UserRegData | null): string | null => {
 }
 
 export const register = ((async (req, res) => {
-  const regData: UserRegData | null = req.body
+  const regData: UserRegEntry | null = req.body
   let serverResponse: UserRegResponse | null = null
 
   const errorMsg = findErrInRegData(regData)
@@ -67,7 +67,7 @@ export const register = ((async (req, res) => {
     return
   }
 
-  const { username, password } = regData as UserRegData
+  const { username, password } = regData as UserRegEntry
 
   const existingUser = await User.findOne({ username }).catch(err => {
     console.error('Something went wrong trying to find user with username:', username)
@@ -89,7 +89,7 @@ export const register = ((async (req, res) => {
     return
   }
 
-  const hashedPassWSalt = await genHashedPassNSaltStr(password)
+  const hashedPassWSalt = await genHashedPassNSaltStr(password as string)
 
   const userDataToSave = {
     username,
@@ -111,7 +111,7 @@ export const register = ((async (req, res) => {
   }
 
   const payloadForClient: UserRegResponseLoad = {
-    username
+    username: (username as string)
   }
 
   serverResponse = createSuccessResponseObj(payloadForClient)

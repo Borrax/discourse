@@ -1,5 +1,5 @@
 import type { Response } from 'supertest'
-import type { UserRegData } from '../../types/UserSharedTypes'
+import type { UserRegEntry } from '../../types/UserSharedTypes'
 
 import supertest from 'supertest'
 import { describe, it, expect, test } from '@jest/globals'
@@ -24,7 +24,7 @@ describe('Testing the user registration API at ' + apiPaths.user.register, () =>
   const existingUser = getExistingUserRegData()
   const validUser = getNonExistingUserRegData()
 
-  const registerRequest = async (payload: UserRegData): Promise<Response> => {
+  const registerRequest = async (payload: UserRegEntry): Promise<Response> => {
     return await request.post(apiPaths.user.register)
       .send(payload).catch(err => {
         throw new Error('Error trying to send register request to the server\n', err)

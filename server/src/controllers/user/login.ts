@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 import type { ServerResponse } from '../../../../shared/types/ServerResponseTypes'
-import type { UserLoginLoad, UserLoginData } from '../../types/UserSharedTypes'
+import type { UserLoginLoad, UserLoginEntry } from '../../types/UserSharedTypes'
 import type { UserModel } from '../../models/user'
 
 import { createErrorResponseObj, createSuccessResponseObj } from '../../utils/serverResponseMethods'
@@ -27,7 +27,7 @@ const { JWT_KEY, JWT_COOKIE_NAME } = JWTConfig
 * @return A string with the error message if it finds
 * anything or null if it doesn't
 */
-const findErrInLoginData = (loginData: UserLoginData | null): string | null => {
+const findErrInLoginData = (loginData: UserLoginEntry | null): string | null => {
   if (loginData === null || typeof loginData !== 'object') {
     return 'No login data provided'
   }
