@@ -1,4 +1,3 @@
-// import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'
 import type { FormEvent } from 'react'
 
 import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'

@@ -4,9 +4,9 @@ import type { ServerResponse } from './ServerResponseTypes'
 * @type The type of data that is needed by
 * the server to register the user
 */
-export type UserRegData = {
-  username: string,
-  password: string
+export type UserRegEntry = {
+  username: string | null,
+  password: string | null
 }
 
 /**
@@ -27,9 +27,9 @@ export type UserRegResponse = ServerResponse<UserRegResponseLoad>
 * @type The type of data the client needs to provide the server on
 * a login request
 */
-export type UserLoginData = {
-  username: string,
-  password: string
+export type UserLoginEntry = {
+  username: string | null,
+  password: string | null
 }
 
 /**
