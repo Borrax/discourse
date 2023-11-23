@@ -1,8 +1,15 @@
 // import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'
 import type { FormEvent } from 'react'
 
+import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'
+
 import { useRef } from 'react'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../shared/UserConstraintsShared'
+
+enum RegFormFields {
+  username = 'username',
+  password = 'password'
+}
 
 export const RegisterForm = (): JSX.Element => {
   const usernameRef = useRef<HTMLInputElement>(null)
@@ -14,14 +21,14 @@ export const RegisterForm = (): JSX.Element => {
 
   const { USERNAME_REGEX } = regDataValidationRegex
 
-  const getUsernameValidationErr = (username: string | undefined): string | null => {
+  const getUsernameValidationErr = (username: string | undefined | null): string | null => {
     if (username == null || username.length === 0) {
       return 'Missing username'
     }
 
     if (username.length < MIN_USERNAME_LEN ||
       username.length > MAX_USERNAME_LEN) {
-      return `Username must be between ${MIN_USERNAME_LEN} and ${MAX_USERNAME_LEN}`
+      return `Username must be between ${MIN_USERNAME_LEN} and ${MAX_USERNAME_LEN} long`
     }
 
     if (!USERNAME_REGEX.test(username)) {
@@ -31,19 +38,41 @@ export const RegisterForm = (): JSX.Element => {
     return null
   }
 
+  const showError = (errMsg: string, _field: RegFormFields): void => {
+    console.log(errMsg)
+  }
+
+  const tryRegister = (data: UserRegEntry): void => {
+    console.log('Registering ', data)
+  }
+
   const handleRegSubmit = (e: FormEvent): void => {
     e.preventDefault()
-    console.log(getUsernameValidationErr(usernameRef.current?.value))
+    let username = usernameRef.current?.value
+
+    const usernameErr = getUsernameValidationErr(username)
+
+    if (usernameErr != null) {
+      showError(usernameErr, RegFormFields.username)
+      return
+    }
+
+    username = username as string
+
+    tryRegister({
+      username,
+      password: null
+    })
   }
 
   return (
   <form onSubmit={handleRegSubmit} className="register-form">
       <div className="field-container">
-        <input name="username" ref={usernameRef}
+        <input name={RegFormFields.username} ref={usernameRef}
           type="text" placeholder='Username'/>
       </div>
       <div className="field-container">
-        <input name="password" type="password"
+        <input name={RegFormFields.password} type="password"
           placeholder='Password'/>
       </div>
       <input type="submit" value="Register" />
