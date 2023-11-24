@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react'
-import { describe, it, expect } from '@jest/globals'
 import { RegisterForm } from './RegisterForm'
 
 describe('RegisterForm', () => {
