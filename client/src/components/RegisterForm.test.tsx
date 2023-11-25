@@ -5,6 +5,6 @@ describe('RegisterForm', () => {
   it('should render', () => {
     const { container } = render(<RegisterForm />)
 
-    expect(container.firstChild).toBeDefined()
+    expect(container.firstChild).toBeInTheDocument()
   })
 })
