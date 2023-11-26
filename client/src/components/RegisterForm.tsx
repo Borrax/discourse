@@ -1,5 +1,4 @@
 import type { FormEvent } from 'react'
-
 import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'
 
 import { useRef } from 'react'
@@ -103,7 +102,7 @@ export const RegisterForm = (): JSX.Element => {
         <input name={RegFormFields.password} type="password"
           placeholder='Password' ref={passwordRef}/>
       </div>
-      <input type="submit" value="Register" />
+      <button type='submit'>Register</button>
   </form>
   )
 }
