@@ -96,13 +96,13 @@ export const RegisterForm = (): JSX.Element => {
   <form onSubmit={handleRegSubmit} className="register-form">
       <div className="field-container">
         <input name={RegFormFields.username} ref={usernameRef}
-          type="text" placeholder='Username'/>
+          type="text" placeholder="Username"/>
       </div>
       <div className="field-container">
         <input name={RegFormFields.password} type="password"
-          placeholder='Password' ref={passwordRef}/>
+          placeholder="Password" ref={passwordRef}/>
       </div>
-      <button type='submit'>Register</button>
+      <button type="submit">Register</button>
   </form>
   )
 }

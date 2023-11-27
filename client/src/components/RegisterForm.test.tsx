@@ -8,7 +8,7 @@ describe('RegisterForm', () => {
     expect(container.firstChild).toBeInTheDocument()
   })
 
-  it('should have username field', () => {
+  it('should have a username field', () => {
     render(<RegisterForm />)
 
     expect(screen.getByRole('textbox')).toHaveAttribute('name', 'username')
@@ -21,7 +21,7 @@ describe('RegisterForm', () => {
     expect(passEl).toBeDefined()
   })
 
-  it('should have register button', () => {
+  it('should have a register button', () => {
     render(<RegisterForm />)
 
     expect(screen.getByRole('button')).toHaveAttribute('type', 'submit')
