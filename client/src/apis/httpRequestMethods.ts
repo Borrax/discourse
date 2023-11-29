@@ -1,5 +1,5 @@
-export const post = (url: string, payload: Object)
-:Promise<Response> => {
+export const post = (url: string, payload: Object):
+Promise<Response> => {
   return fetch(url, {
     method: 'POST',
     headers: {
