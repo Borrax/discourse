@@ -1,10 +1,10 @@
-export const post = (url: string, payload: Object):
+export const post = async (url: string, payload: string):
 Promise<Response> => {
-  return fetch(url, {
+  return await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(payload)
+    body: payload
   })
 }
