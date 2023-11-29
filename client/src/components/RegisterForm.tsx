@@ -3,6 +3,7 @@ import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'
 
 import { useRef } from 'react'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../shared/UserConstraintsShared'
+import { registerUser } from '../apis/users/register'
 
 enum RegFormFields {
   username = 'username',
@@ -60,8 +61,12 @@ export const RegisterForm = (): JSX.Element => {
     console.log(errMsg)
   }
 
-  const tryRegister = (data: UserRegEntry): void => {
-    console.log('Registering ', data)
+  const tryRegister = async (data: UserRegEntry): Promise<void> => {
+    try {
+      await registerUser(data)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const handleRegSubmit = (e: FormEvent): void => {
@@ -89,7 +94,7 @@ export const RegisterForm = (): JSX.Element => {
     tryRegister({
       username,
       password
-    })
+    }).catch(() => {})
   }
 
   return (
