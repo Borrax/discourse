@@ -44,7 +44,10 @@ const config: WebpackConfig = {
   devServer: {
     port: 5000,
     hot: true,
-    open: true
+    open: true,
+    proxy: {
+      '/api': 'http://localhost:8000'
+    }
   }
 }
 

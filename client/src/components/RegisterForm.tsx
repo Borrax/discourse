@@ -90,6 +90,7 @@ export const RegisterForm = (): JSX.Element => {
 
     username = username as string
     password = password as string
+    console.log(username)
 
     tryRegister({
       username,
