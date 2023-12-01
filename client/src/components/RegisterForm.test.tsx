@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { RegisterForm } from './RegisterForm'
 
 describe('RegisterForm', () => {
@@ -25,5 +25,14 @@ describe('RegisterForm', () => {
     render(<RegisterForm />)
 
     expect(screen.getByRole('button')).toHaveAttribute('type', 'submit')
+  })
+
+  it('should show an error on empty input', () => {
+    const { getByText, getByTestId } = render(<RegisterForm />)
+
+    const btn = getByText(/register/i)
+    fireEvent.click(btn)
+
+    expect(getByTestId('error-msg')).toBeDefined()
   })
 })

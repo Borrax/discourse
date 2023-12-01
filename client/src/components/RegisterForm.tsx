@@ -105,7 +105,9 @@ export const RegisterForm = (): JSX.Element => {
   return (
   <form onSubmit={handleRegSubmit} className="register-form">
       <div className="erorr-msg-container">
-        { errMsg }
+        { errMsg != null
+          ? <span data-testid="error-msg">{errMsg}</span>
+          : null }
       </div>
       <div className="field-container">
         <input name={RegFormFields.username} ref={usernameRef}
