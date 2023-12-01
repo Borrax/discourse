@@ -30,30 +30,30 @@ describe('Testing the server response methods', () => {
       console.error = originalConsoleError
     })
 
-    it('should return null when non-string and non-null msg is provided', () => {
+    it('should return empty string when non-string and non-null msg is provided', () => {
       // disable the error message
       const mockFn = jest.fn()
       console.error = mockFn
 
       let resp = createErrorResponseObj(5 as any)
       expect(isErrorResponseObj(resp)).toBe(true)
-      expect(resp.err).toBe(null)
+      expect(resp.err).toBe('')
 
       resp = createErrorResponseObj(5.2 as any)
       expect(isErrorResponseObj(resp)).toBe(true)
-      expect(resp.err).toBe(null)
+      expect(resp.err).toBe('')
 
       resp = createErrorResponseObj([] as any)
       expect(isErrorResponseObj(resp)).toBe(true)
-      expect(resp.err).toBe(null)
+      expect(resp.err).toBe('')
 
       resp = createErrorResponseObj({} as any)
       expect(isErrorResponseObj(resp)).toBe(true)
-      expect(resp.err).toBe(null)
+      expect(resp.err).toBe('')
 
       resp = createErrorResponseObj(true as any)
       expect(isErrorResponseObj(resp)).toBe(true)
-      expect(resp.err).toBe(null)
+      expect(resp.err).toBe('')
 
       console.error = originalConsoleError
     })
@@ -77,7 +77,7 @@ describe('Testing the server response methods', () => {
     })
 
     it('should return an error response object when the input is null', () => {
-      const resp = createErrorResponseObj(null)
+      const resp = createErrorResponseObj(null as any)
       expect(isErrorResponseObj(resp)).toBe(true)
     })
 
