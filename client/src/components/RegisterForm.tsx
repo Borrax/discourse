@@ -1,9 +1,10 @@
 import type { FormEvent } from 'react'
-import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'
+import type { UserRegEntry, UserRegResponse } from '../../../shared/types/UserSharedTypes'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../shared/UserConstraintsShared'
 import { registerUser } from '../apis/users/register'
+import { ErrorResponse } from '../../../shared/types/ServerResponseTypes'
 
 enum RegFormFields {
   username = 'username',
@@ -11,6 +12,7 @@ enum RegFormFields {
 }
 
 export const RegisterForm = (): JSX.Element => {
+  const [errMsg, setErrMsg] = useState<string | null>(null)
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
@@ -57,15 +59,26 @@ export const RegisterForm = (): JSX.Element => {
     return null
   }
 
-  const showError = (errMsg: string, _field: RegFormFields): void => {
-    console.log(errMsg)
+  const showError = (errMsg: string): void => {
+    setErrMsg(errMsg)
+  }
+
+  const isErrorResp = (resp: UserRegResponse): resp is ErrorResponse => {
+    if ((resp as ErrorResponse).err != null) {
+      return true
+    }
+
+    return false
   }
 
   const tryRegister = async (data: UserRegEntry): Promise<void> => {
     try {
-      await registerUser(data)
-    } catch (err) {
-      console.error(err)
+      const res = await registerUser(data)
+      if (isErrorResp(res)) {
+        showError(res.err)
+      }
+    } catch (_err) {
+      showError('Something went wrong registering you')
     }
   }
 
@@ -77,20 +90,19 @@ export const RegisterForm = (): JSX.Element => {
     const usernameErr = getUsernameValidationErr(username)
 
     if (usernameErr !== null) {
-      showError(usernameErr, RegFormFields.username)
+      showError(usernameErr)
       return
     }
 
     const passwordErr = getPasswordValidationErr(password)
 
     if (passwordErr !== null) {
-      showError(passwordErr, RegFormFields.password)
+      showError(passwordErr)
       return
     }
 
     username = username as string
     password = password as string
-    console.log(username)
 
     tryRegister({
       username,
@@ -100,6 +112,9 @@ export const RegisterForm = (): JSX.Element => {
 
   return (
   <form onSubmit={handleRegSubmit} className="register-form">
+      <div className="erorr-msg-container">
+        { errMsg }
+      </div>
       <div className="field-container">
         <input name={RegFormFields.username} ref={usernameRef}
           type="text" placeholder="Username"/>

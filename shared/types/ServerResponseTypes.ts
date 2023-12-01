@@ -3,7 +3,7 @@ export type SuccessResponse<T> = {
 }
 
 export type ErrorResponse = {
-  err: String | null
+  err: string
 }
 
 export type ServerResponse<T> = SuccessResponse<T> | ErrorResponse
