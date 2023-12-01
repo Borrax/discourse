@@ -8,14 +8,14 @@ describe('Testing the server response methods', () => {
   describe('The error response obj creator', () => {
     const errorMsg = 'test error'
 
-    it('error message should be null when input message is undefined', () => {
+    it('error message should be empty string when input message is undefined', () => {
       // disable the error message
       const mockFn = jest.fn()
       console.error = mockFn
 
       const resp = createErrorResponseObj(undefined as any)
       expect(isErrorResponseObj(resp)).toBe(true)
-      expect(resp.err).toBe(null)
+      expect(resp.err).toBe('')
 
       console.error = originalConsoleError
     })
