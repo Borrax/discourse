@@ -7,7 +7,7 @@ export const isSuccessResponseObj = <T>(obj: SuccessResponse<T> | null): boolean
   return false
 }
 
-export const isErrorResponseObj = (obj: ErrorResponse | null): boolean => {
+export const isErrorResponseObj = (obj: ErrorResponse | null): obj is ErrorResponse=> {
   if (obj === null) return false
   if ('err' in obj) return true
 
