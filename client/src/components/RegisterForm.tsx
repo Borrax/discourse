@@ -1,10 +1,10 @@
 import type { FormEvent } from 'react'
-import type { UserRegEntry, UserRegResponse } from '../../../shared/types/UserSharedTypes'
+import type { UserRegEntry } from '../../../shared/types/UserSharedTypes'
 
 import { useRef, useState } from 'react'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../shared/UserConstraintsShared'
 import { registerUser } from '../apis/users/register'
-import { ErrorResponse } from '../../../shared/types/ServerResponseTypes'
+import { isErrorResponseObj } from '../../../shared/serverResponseMethods'
 
 enum RegFormFields {
   username = 'username',
@@ -63,18 +63,10 @@ export const RegisterForm = (): JSX.Element => {
     setErrMsg(errMsg)
   }
 
-  const isErrorResp = (resp: UserRegResponse): resp is ErrorResponse => {
-    if ((resp as ErrorResponse).err != null) {
-      return true
-    }
-
-    return false
-  }
-
   const tryRegister = async (data: UserRegEntry): Promise<void> => {
     try {
       const res = await registerUser(data)
-      if (isErrorResp(res)) {
+      if (isErrorResponseObj(res)) {
         showError(res.err)
       }
     } catch (_err) {
