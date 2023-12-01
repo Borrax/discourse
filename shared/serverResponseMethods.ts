@@ -1,6 +1,6 @@
 import type { ErrorResponse, SuccessResponse } from './types/ServerResponseTypes'
 
-export const isSuccessResponseObj = <T>(obj: SuccessResponse<T> | null): boolean => {
+export const isSuccessResponseObj = <T>(obj: SuccessResponse<T> | null): obj is SuccessResponse<T> => {
   if (obj === null) return false
   if ('load' in obj) return true
 
