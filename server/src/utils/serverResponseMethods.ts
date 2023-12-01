@@ -6,11 +6,11 @@ import { errorLogger } from './errorLogger'
 * that will be sent to the client
 * @returns An error server response onject
 */
-export const createErrorResponseObj = (msg: string | null): ErrorResponse => {
-  if (typeof msg !== 'string' && msg !== null) {
+export const createErrorResponseObj = (msg: string): ErrorResponse => {
+  if (typeof msg !== 'string') {
     errorLogger(new TypeError('Wrong input of the error response creator\n' +
       'Expected string or null and got ' + typeof msg))
-    msg = null
+    msg = ''
   }
 
   return {
