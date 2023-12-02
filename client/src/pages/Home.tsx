@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { RegisterForm } from '../components/RegisterForm'
 
 export const Home = (): JSX.Element => {
   const [showForms, setShowForms] = useState({
@@ -32,6 +33,11 @@ export const Home = (): JSX.Element => {
         <button onClick={() => { toggleForms(true) }}>
           Register
         </button>
+        <div>
+          { showForms.register
+            ? <RegisterForm />
+            : null }
+        </div>
       </div>
     </section>
   )
