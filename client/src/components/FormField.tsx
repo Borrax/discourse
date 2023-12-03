@@ -1,12 +1,12 @@
 import type { Ref } from 'react'
 
-type FormProps = {
+type FormFieldProps = {
   name: string
-  inputType: string
+  inputType: 'text' | 'password' | 'email'
   ref: Ref<HTMLInputElement>
 }
 
-export const FormField = (props: FormProps): JSX.Element => {
+export const FormField = (props: FormFieldProps): JSX.Element => {
   return (
     <div className="field-container">
       <input name={props.name} ref={props.ref}
