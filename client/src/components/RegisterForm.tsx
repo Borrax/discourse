@@ -111,10 +111,10 @@ export const RegisterForm = (): JSX.Element => {
           : null }
       </div>
       <FormField name={RegFormFields.username}
-          ref={usernameRef} inputType='text'
+          inputRef={usernameRef} inputType='text'
       />
       <FormField name={RegFormFields.password}
-          ref={passwordRef} inputType='password'
+          inputRef={passwordRef} inputType='password'
       />
       <button type="submit">Register</button>
   </form>
