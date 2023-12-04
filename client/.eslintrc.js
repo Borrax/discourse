@@ -21,6 +21,7 @@ module.exports = {
     'jest'
   ],
   rules: {
-    'react/react-in-jsx-scope': 'off'
+    'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/consistent-type-definitions': 'off'
   }
 }
