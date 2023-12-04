@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import { allowedUserRegLengths, regDataValidationRegex } from '../../../shared/UserConstraintsShared'
 import { registerUser } from '../apis/users/register'
 import { isErrorResponseObj } from '../../../shared/serverResponseMethods'
+import { FormField } from './FormField'
 
 enum RegFormFields {
   username = 'username',
@@ -109,14 +110,12 @@ export const RegisterForm = (): JSX.Element => {
           ? <span data-testid="error-msg">{errMsg}</span>
           : null }
       </div>
-      <div className="field-container">
-        <input name={RegFormFields.username} ref={usernameRef}
-          type="text" placeholder="Username"/>
-      </div>
-      <div className="field-container">
-        <input name={RegFormFields.password} type="password"
-          placeholder="Password" ref={passwordRef}/>
-      </div>
+      <FormField name={RegFormFields.username}
+          ref={usernameRef} inputType='text'
+      />
+      <FormField name={RegFormFields.password}
+          ref={passwordRef} inputType='password'
+      />
       <button type="submit">Register</button>
   </form>
   )
