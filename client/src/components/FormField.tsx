@@ -22,7 +22,7 @@ export const FormField = (props: FormFieldProps): JSX.Element => {
           : 'password'
         } placeholder={props.name}/>
       { props.inputType === 'password'
-        ? <button onClick={toggleShowPassword}>&#x1F441;</button>
+        ? <button type='button' onClick={toggleShowPassword}>&#x1F441;</button>
         : null
       }
     </div>
